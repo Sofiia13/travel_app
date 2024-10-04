@@ -15,7 +15,6 @@ class _CitiesListState extends State<CitiesList> {
   List<dynamic> _countries = [];
   List<String> famousCities = [
     'Istanbul',
-    'London',
     'Paris',
     'Dubai',
     'Antalya',
@@ -24,11 +23,13 @@ class _CitiesListState extends State<CitiesList> {
     'New York',
     'Cancun',
     'Tokyo',
+    'London',
   ];
   final _filteredCapitals = [];
 
   void _getCapital() async {
-    final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
+    final url =
+        Uri.parse('https://countriesnow.space/api/v0.1/countries/capital');
     final response = await http.get(url);
 
     final Map<String, dynamic> listData = json.decode(response.body);
@@ -36,16 +37,13 @@ class _CitiesListState extends State<CitiesList> {
 
     for (final country in _countries) {
       for (final city in famousCities) {
-        if (country['cities'].contains(city)) {
-          _filteredCapitals.add({
-            'country': country['country'],
-            'city': city,
-          });
+        if (country['capital'] == city) {
+          _filteredCapitals.add(country);
           break;
         }
       }
     }
-    _filteredCapitals..toList();
+    _filteredCapitals.toList();
 
     setState(() {
       _filteredCapitals;
@@ -69,8 +67,8 @@ class _CitiesListState extends State<CitiesList> {
           itemBuilder: (context, index) {
             final country = _filteredCapitals[index];
             return CardsList(
-              country: country['country'],
-              capital: country['city'],
+              country: country['name'],
+              capital: country['capital'],
             );
           }),
     );
