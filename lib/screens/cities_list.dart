@@ -20,21 +20,35 @@ class _CitiesListState extends State<CitiesList> {
     'Dubai',
     'Antalya',
     'Hong Kong',
-    'BangKok',
+    'Bangkok',
     'New York',
     'Cancun',
     'Tokyo',
   ];
+  final _filteredCapitals = [];
 
   void _getCapital() async {
-    final url =
-        Uri.parse('https://countriesnow.space/api/v0.1/countries/capital');
+    final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
     final response = await http.get(url);
 
     final Map<String, dynamic> listData = json.decode(response.body);
+    _countries = listData['data'];
+
+    for (final country in _countries) {
+      for (final city in famousCities) {
+        if (country['cities'].contains(city)) {
+          _filteredCapitals.add({
+            'country': country['country'],
+            'city': city,
+          });
+          break;
+        }
+      }
+    }
+    _filteredCapitals..toList();
 
     setState(() {
-      _countries = listData['data'];
+      _filteredCapitals;
     });
   }
 
@@ -51,12 +65,12 @@ class _CitiesListState extends State<CitiesList> {
         title: const Text('Choose your city'),
       ),
       body: ListView.builder(
-          itemCount: _countries.length,
+          itemCount: _filteredCapitals.length,
           itemBuilder: (context, index) {
-            final country = _countries[index];
+            final country = _filteredCapitals[index];
             return CardsList(
-              country: country['name'],
-              capital: country['capital'],
+              country: country['country'],
+              capital: country['city'],
             );
           }),
     );
