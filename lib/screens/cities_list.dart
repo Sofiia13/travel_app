@@ -14,6 +14,8 @@ class CitiesList extends StatefulWidget {
 
 class _CitiesListState extends State<CitiesList> {
   List<dynamic> _countries = [];
+  List<dynamic> _cities = [];
+
   List<String> famousCities = [
     'Paris',
     'Hong Kong',
@@ -22,6 +24,7 @@ class _CitiesListState extends State<CitiesList> {
     'London',
   ];
   final _filteredCapitals = [];
+  final _allCities = [];
 
   void _getCapital() async {
     final url =
@@ -46,10 +49,37 @@ class _CitiesListState extends State<CitiesList> {
     });
   }
 
-  void _selectCity(BuildContext context) {
+  void _getAllCities() async {
+    final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
+    final response = await http.get(url);
+    final Map<String, dynamic> listData = json.decode(response.body);
+    _cities = listData['data'];
+
+    for (final city in _cities) {
+      _allCities.add(city['country']);
+    }
+    _allCities.toList();
+  }
+
+  // void _getCapital() async {
+  //   final url = 'https://api.dev.me/v1-list-countries';
+  //   final response = await http.get(
+  //     Uri.parse(url),
+  //     headers: {
+  //       'x-api-key':
+  //           '6703dd5762923bee1de4b1ff-73961361aefd', // Replace with your actual API key
+  //     },
+  //   );
+  //   final data = json.decode(response.body);
+  //   print(data); // Do something with the data
+  // }
+
+  void _selectCity(BuildContext context, String cityName) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => CityInfo(),
+        builder: (ctx) => CityInfo(
+          cityName: cityName,
+        ),
       ),
     );
   }
@@ -74,7 +104,10 @@ class _CitiesListState extends State<CitiesList> {
               country: country['name'],
               capital: country['capital'],
               selectCity: () {
-                _selectCity(context);
+                _selectCity(
+                  context,
+                  country['capital'],
+                );
               },
             );
           }),

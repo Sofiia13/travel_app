@@ -3,7 +3,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatelessWidget {
-  const MapWidget({super.key});
+  MapWidget({super.key, required this.xCor, required this.yCor});
+
+  double xCor;
+  double yCor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class MapWidget extends StatelessWidget {
       height: MediaQuery.of(context).size.height / 2,
       child: FlutterMap(
         options: MapOptions(
-          center: LatLng(51.5, -0.09), // Coordinates for London
+          center: LatLng(yCor, xCor), // Coordinates for London
           zoom: 10.0,
         ),
         children: [
@@ -22,6 +25,7 @@ class MapWidget extends StatelessWidget {
             urlTemplate:
                 "https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?&apiKey=731dfd7dfb0d4ebb99295e0cfe811177",
             userAgentPackageName: 'com.example.travel_app',
+            // subdomains: ['a', 'b', 'c'],
           ),
         ],
       ),

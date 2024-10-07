@@ -15,7 +15,9 @@ class CardsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectCity,
+      onTap: () {
+        selectCity();
+      },
       child: Card(
         margin: const EdgeInsets.all(10),
         child: Padding(
