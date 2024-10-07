@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:travel_app/widgets/cards_list.dart';
+import 'package:travel_app/screens/city_info.dart';
+import 'package:travel_app/widgets/cards.dart';
 import 'package:http/http.dart' as http;
 
 class CitiesList extends StatefulWidget {
@@ -14,14 +15,9 @@ class CitiesList extends StatefulWidget {
 class _CitiesListState extends State<CitiesList> {
   List<dynamic> _countries = [];
   List<String> famousCities = [
-    'Istanbul',
     'Paris',
-    'Dubai',
-    'Antalya',
     'Hong Kong',
     'Bangkok',
-    'New York',
-    'Cancun',
     'Tokyo',
     'London',
   ];
@@ -50,6 +46,14 @@ class _CitiesListState extends State<CitiesList> {
     });
   }
 
+  void _selectCity(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => CityInfo(),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -69,6 +73,9 @@ class _CitiesListState extends State<CitiesList> {
             return CardsList(
               country: country['name'],
               capital: country['capital'],
+              selectCity: () {
+                _selectCity(context);
+              },
             );
           }),
     );
