@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:travel_app/widgets/choose_category.dart';
 import 'package:travel_app/widgets/filtered_places.dart';
 import 'package:travel_app/widgets/map.dart';
 
@@ -23,7 +22,7 @@ class _CityInfoState extends State<CityInfo> {
   int limit = 10;
   double? xCor;
   double? yCor;
-  bool _isLoading = true; // Indicates loading state
+  bool _isLoading = true;
 
   final String apiKey = '731dfd7dfb0d4ebb99295e0cfe811177';
   String? selectedCategory;
@@ -61,8 +60,7 @@ class _CityInfoState extends State<CityInfo> {
           xCor = _cityCoordinates[0]['longitude'];
           yCor = _cityCoordinates[0]['latitude'];
           selectedCategory = categories[0];
-          getPlacesByCategory(selectedCategory, xCor, yCor,
-              10); // Fetch places after getting coordinates
+          getPlacesByCategory(selectedCategory, xCor, yCor, 10);
         } else {
           xCor = null;
           yCor = null;
@@ -87,9 +85,10 @@ class _CityInfoState extends State<CityInfo> {
       final Map<String, dynamic> listData = json.decode(response.body);
       setState(() {
         _places = listData['features'];
+
         _placeName =
             _places.map((place) => place['properties']['name']).toList();
-        _isLoading = false; // Data loaded
+        _isLoading = false;
       });
     } else {
       print('Failed to load places: ${response.statusCode}');
@@ -105,7 +104,7 @@ class _CityInfoState extends State<CityInfo> {
         title: Text(widget.cityName),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator()) // Loading indicator
+          ? const Center(child: CircularProgressIndicator())
           : (xCor != null && yCor != null)
               ? Column(
                   children: [
@@ -127,8 +126,7 @@ class _CityInfoState extends State<CityInfo> {
                         onChanged: (value) {
                           setState(() {
                             selectedCategory = value!;
-                            _isLoading =
-                                true; // Set loading when fetching new places
+                            _isLoading = true;
                             getPlacesByCategory(
                                 selectedCategory, xCor, yCor, 10);
                           });
@@ -137,8 +135,7 @@ class _CityInfoState extends State<CityInfo> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: _placeName
-                            .length, // Use _placeName length to avoid out of range
+                        itemCount: _placeName.length,
                         itemBuilder: (context, index) {
                           return FilteredPlaces(
                             name: _placeName[index],
@@ -148,7 +145,7 @@ class _CityInfoState extends State<CityInfo> {
                     ),
                   ],
                 )
-              : Center(
+              : const Center(
                   child: Text('Coordinates not found. Please try again.'),
                 ),
     );
