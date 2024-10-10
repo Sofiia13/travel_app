@@ -11,10 +11,10 @@ class MapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      // padding: const EdgeInsets.all(10),
       // width: double.infinity,
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2,
+      height: MediaQuery.of(context).size.height / 2.5,
       child: FlutterMap(
         options: MapOptions(
           center: LatLng(yCor, xCor), // Coordinates for London
@@ -25,7 +25,6 @@ class MapWidget extends StatelessWidget {
             urlTemplate:
                 "https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?&apiKey=731dfd7dfb0d4ebb99295e0cfe811177",
             userAgentPackageName: 'com.example.travel_app',
-            // subdomains: ['a', 'b', 'c'],
           ),
         ],
       ),
