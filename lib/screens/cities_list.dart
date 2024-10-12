@@ -88,7 +88,7 @@ class _CitiesListState extends State<CitiesList> {
             final country = _filteredCapitals[index];
             return CardsList(
               country: country['name'],
-              capital: country['capital'],
+              city: country['capital'],
               selectCity: () {
                 _selectCity(
                   context,

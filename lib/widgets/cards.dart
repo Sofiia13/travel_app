@@ -4,12 +4,12 @@ class CardsList extends StatelessWidget {
   const CardsList({
     super.key,
     required this.country,
-    required this.capital,
+    required this.city,
     required this.selectCity,
   });
 
   final String country;
-  final String capital;
+  final String city;
   final void Function() selectCity;
 
   @override
@@ -28,7 +28,7 @@ class CardsList extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Text(capital),
+                  Text(city),
                   const SizedBox(height: 20),
                   Text(country),
                 ],
