@@ -14,7 +14,6 @@ class CitiesList extends StatefulWidget {
 
 class _CitiesListState extends State<CitiesList> {
   List<dynamic> _countries = [];
-  List<dynamic> _cities = [];
 
   List<String> famousCities = [
     'Paris',
@@ -24,7 +23,6 @@ class _CitiesListState extends State<CitiesList> {
     'London',
   ];
   final _filteredCapitals = [];
-  final _allCities = [];
 
   void _getCapital() async {
     final url =
@@ -47,18 +45,6 @@ class _CitiesListState extends State<CitiesList> {
     setState(() {
       _filteredCapitals;
     });
-  }
-
-  void _getAllCities() async {
-    final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
-    final response = await http.get(url);
-    final Map<String, dynamic> listData = json.decode(response.body);
-    _cities = listData['data'];
-
-    for (final city in _cities) {
-      _allCities.add(city['country']);
-    }
-    _allCities.toList();
   }
 
   // void _getCapital() async {
