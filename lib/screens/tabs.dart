@@ -44,7 +44,7 @@ class _TabsScreenState extends State<TabsScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.apps),
-            label: 'Recommended',
+            label: 'For You',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
