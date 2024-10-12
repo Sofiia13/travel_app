@@ -93,9 +93,9 @@ class _CitiesListState extends State<CitiesList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose your city'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Choose your city'),
+      // ),
       body: ListView.builder(
           itemCount: _filteredCapitals.length,
           itemBuilder: (context, index) {
