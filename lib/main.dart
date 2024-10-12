@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/screens/cities_list.dart';
+import 'package:travel_app/screens/tabs.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 58, 135, 183)),
       ),
-      home: const CitiesList(),
+      home: const TabsScreen(),
     );
   }
 }

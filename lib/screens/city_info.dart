@@ -86,8 +86,9 @@ class _CityInfoState extends State<CityInfo> {
       setState(() {
         _places = listData['features'];
 
-        _placeName =
-            _places.map((place) => place['properties']['name']).toList();
+        _placeName = _places
+            .map((place) => place['properties']['address_line1'])
+            .toList();
         _isLoading = false;
       });
     } else {
