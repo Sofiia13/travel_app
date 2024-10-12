@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -11,19 +14,34 @@ class _SearchScreenState extends State<SearchScreen> {
   final myController = TextEditingController();
   String enteredText = '';
 
+  final _allCities = [];
+  List<dynamic> _cities = [];
+
+  void _getAllCities() async {
+    final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
+    final response = await http.get(url);
+    final Map<String, dynamic> listData = json.decode(response.body);
+    _cities = listData['data'];
+
+    for (final city in _cities) {
+      _allCities.add(city['country']);
+    }
+    _allCities.toList();
+    print(_allCities);
+  }
+
   @override
   void initState() {
     super.initState();
-    // Listen to changes in the text field
     myController.addListener(() {
       setState(() {
-        enteredText = myController.text; // Update state when text changes
+        enteredText = myController.text;
       });
     });
+    _getAllCities();
   }
 
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     myController.dispose();
     super.dispose();
   }
