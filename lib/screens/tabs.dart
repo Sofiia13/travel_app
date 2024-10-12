@@ -24,15 +24,18 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     Widget activePage = CitiesList();
+    var activePageTitle = 'Choose your city';
     if (_selectedPageIndex == 1) {
       activePage = SearchScreen();
+      activePageTitle = 'Search';
     } else if (_selectedPageIndex == 2) {
       activePage = CalendarScreen();
+      activePageTitle = 'Calendar';
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: Text(activePageTitle),
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
