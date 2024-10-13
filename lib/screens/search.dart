@@ -38,10 +38,6 @@ class _SearchScreenState extends State<SearchScreen> {
           'cities': cities,
         });
       }
-      // for (var countryWithCities in _allCountriesWithCities) {
-      //   print(
-      //       "Country: ${countryWithCities['country']}, Cities: ${countryWithCities['cities']}");
-      // }
     } else {
       print('Failed to load data');
     }
@@ -60,29 +56,24 @@ class _SearchScreenState extends State<SearchScreen> {
               (city) => city.toLowerCase().contains(enteredText.toLowerCase()))
           .toList();
 
-      // If the country name matches, add all its cities to the result
       if (countryMatch) {
         for (final city in place['cities']) {
           _searchedPlaces.add({
             'country': place['country'],
-            'city': city, // Add each city individually
+            'city': city,
           });
         }
       }
 
-      // If cities match (but country doesn't), add only the matching cities
       if (matchingCities.isNotEmpty && !countryMatch) {
         for (final city in matchingCities) {
           _searchedPlaces.add({
             'country': place['country'],
-            'city': city, // Add each matching city
+            'city': city,
           });
         }
       }
     }
-
-    // Debugging: Print the result to verify
-    print(_searchedPlaces);
   }
 
   @override
