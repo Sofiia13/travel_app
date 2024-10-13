@@ -3,6 +3,7 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -19,15 +20,24 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+    // defaultConfig {
+    //     // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+    //     minSdkVersion 23
+    //     applicationId = "com.example.travel_app"
+    //     // You can update the following values to match your application needs.
+    //     // For more information, see: https://flutter.dev/to/review-gradle-config.
+    //     minSdk = flutter.minSdkVersion
+    //     targetSdk = flutter.targetSdkVersion
+    //     versionCode = flutter.versionCode
+    //     versionName = flutter.versionName
+    // }
+
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.travel_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId "com.example.travel_app" // Ваш ID програми
+        minSdkVersion 23 // Підвищте minSdkVersion до 23
+        targetSdkVersion 33 // Залиште targetSdkVersion
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
@@ -41,4 +51,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.4.0')
 }

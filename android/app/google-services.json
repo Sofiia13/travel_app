@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "278388737195",
+    "firebase_url": "https://travel-app-d9d28-default-rtdb.firebaseio.com",
+    "project_id": "travel-app-d9d28",
+    "storage_bucket": "travel-app-d9d28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278388737195:android:79c5726997d5cb953463ee",
+        "android_client_info": {
+          "package_name": "com.example.travel_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyYEzVtnlx9dZyO5vb-tww3pGT6ixVCWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
