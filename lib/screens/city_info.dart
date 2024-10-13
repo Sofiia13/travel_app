@@ -46,10 +46,9 @@ class _CityInfoState extends State<CityInfo> {
   }
 
   void _getCityCoordinates(String name) async {
-    final url = Uri.parse('https://api.api-ninjas.com/v1/city?name=$name');
-    final response = await http.get(url, headers: {
-      'X-Api-Key': 'w1alNvn/gAEdtCWgy1cKgg==8aACMMX2MSFRlCmI',
-    });
+    final url = Uri.parse(
+        'http://api.openweathermap.org/geo/1.0/direct?q=$name&limit=1&appid=c84bc983237ae8f3e1cf6daa568aab15');
+    final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final List<dynamic> listData = json.decode(response.body);
@@ -57,8 +56,8 @@ class _CityInfoState extends State<CityInfo> {
       setState(() {
         _cityCoordinates = listData;
         if (_cityCoordinates.isNotEmpty) {
-          xCor = _cityCoordinates[0]['longitude'];
-          yCor = _cityCoordinates[0]['latitude'];
+          xCor = _cityCoordinates[0]['lon'];
+          yCor = _cityCoordinates[0]['lat'];
           selectedCategory = categories[0];
           getPlacesByCategory(selectedCategory, xCor, yCor, 10);
         } else {

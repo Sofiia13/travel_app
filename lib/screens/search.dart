@@ -48,30 +48,41 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _getSearchedPlaces() {
-    _searchedPlaces = _allCountriesWithCities
-        .map((place) {
-          final countryMatch = place['country']
-              .toLowerCase()
-              .contains(enteredText.toLowerCase());
+    _searchedPlaces = [];
 
-          final matchingCities = (place['cities'] as List<String>)
-              .where((city) =>
-                  city.toLowerCase().contains(enteredText.toLowerCase()))
-              .toList();
+    // Loop through all countries with cities
+    for (final place in _allCountriesWithCities) {
+      final countryMatch =
+          place['country'].toLowerCase().contains(enteredText.toLowerCase());
 
-          if (countryMatch || matchingCities.isNotEmpty) {
-            return {
-              'country': place['country'],
-              'cities':
-                  matchingCities.isNotEmpty ? matchingCities : place['cities']
-            };
-          }
+      final matchingCities = (place['cities'] as List<String>)
+          .where(
+              (city) => city.toLowerCase().contains(enteredText.toLowerCase()))
+          .toList();
 
-          return null;
-        })
-        .where((place) => place != null)
-        .cast<Map<String, dynamic>>()
-        .toList();
+      // If the country name matches, add all its cities to the result
+      if (countryMatch) {
+        for (final city in place['cities']) {
+          _searchedPlaces.add({
+            'country': place['country'],
+            'city': city, // Add each city individually
+          });
+        }
+      }
+
+      // If cities match (but country doesn't), add only the matching cities
+      if (matchingCities.isNotEmpty && !countryMatch) {
+        for (final city in matchingCities) {
+          _searchedPlaces.add({
+            'country': place['country'],
+            'city': city, // Add each matching city
+          });
+        }
+      }
+    }
+
+    // Debugging: Print the result to verify
+    print(_searchedPlaces);
   }
 
   @override
@@ -127,9 +138,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 final country = _searchedPlaces[index];
                 return CardsList(
                     country: country['country'],
-                    city: country['cities'].first,
+                    city: country['city'],
                     selectCity: () {
-                      _selectCity(context, country['cities']);
+                      _selectCity(context, country['city']);
                     });
               },
             ),
