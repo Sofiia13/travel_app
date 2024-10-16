@@ -57,6 +57,7 @@ class _LogInScreenState extends State<LogInScreen> {
           onEmailChanged: updateEmail,
           onPasswordChanged: updatePassword,
           buttonText: 'Login',
+          goTo: () {},
         ),
       ),
     );

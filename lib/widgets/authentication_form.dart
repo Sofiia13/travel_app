@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AuthenticationForm extends StatelessWidget {
-  const AuthenticationForm({
+  AuthenticationForm({
     super.key,
     required this.authenticateUser,
     required this.formKey,
     required this.onEmailChanged,
     required this.onPasswordChanged,
     required this.buttonText,
+    required this.goTo,
   });
 
   final void Function() authenticateUser;
@@ -15,6 +16,7 @@ class AuthenticationForm extends StatelessWidget {
   final void Function(String) onEmailChanged;
   final void Function(String) onPasswordChanged;
   final String buttonText;
+  void Function() goTo;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,10 @@ class AuthenticationForm extends StatelessWidget {
                 child: const Text('Reset'),
               ),
               ElevatedButton(
-                onPressed: authenticateUser,
+                onPressed: () {
+                  authenticateUser();
+                  goTo();
+                },
                 child: Text(buttonText),
               )
             ],

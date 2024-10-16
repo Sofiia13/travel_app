@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/widgets/authentication_form.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -38,8 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void sendEmailVerification() async {
-    User? user =
-        FirebaseAuth.instance.currentUser; // Get the currently signed-in user
+    User? user = FirebaseAuth.instance.currentUser;
     if (user != null && !user.emailVerified) {
       await FirebaseAuth.instance.setLanguageCode("fr");
       await user.sendEmailVerification();
@@ -61,6 +61,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  void _goToLoginPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => const LogInScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // var _isSending = false;
@@ -73,6 +81,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onEmailChanged: updateEmail,
           onPasswordChanged: updatePassword,
           buttonText: 'SignUp',
+          goTo: () {
+            _goToLoginPage(context);
+          },
         ),
       ),
     );
