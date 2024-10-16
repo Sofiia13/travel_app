@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 58, 135, 183)),
       ),
       // home: const TabsScreen(),
-      // home: const SignUpScreen(),
-      home: const LogInScreen(),
+      home: const SignUpScreen(),
+      // home: const LogInScreen(),
     );
   }
 }
