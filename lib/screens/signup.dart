@@ -24,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           email: emailAddress,
           password: password,
         );
+        sendEmailVerification();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
@@ -33,6 +34,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  void sendEmailVerification() async {
+    User? user =
+        FirebaseAuth.instance.currentUser; // Get the currently signed-in user
+    if (user != null && !user.emailVerified) {
+      await FirebaseAuth.instance.setLanguageCode("fr");
+      await user.sendEmailVerification();
+      print('Verification email sent');
+    } else {
+      print('No user found or email is already verified.');
     }
   }
 
