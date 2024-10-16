@@ -7,12 +7,14 @@ class AuthenticationForm extends StatelessWidget {
     required this.formKey,
     required this.onEmailChanged,
     required this.onPasswordChanged,
+    required this.buttonText,
   });
 
   final void Function() authenticateUser;
   final GlobalKey<FormState> formKey;
   final void Function(String) onEmailChanged;
   final void Function(String) onPasswordChanged;
+  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class AuthenticationForm extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: authenticateUser,
-                child: const Text('Sign Up'),
+                child: Text(buttonText),
               )
             ],
           )

@@ -59,6 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           formKey: _formKey,
           onEmailChanged: updateEmail,
           onPasswordChanged: updatePassword,
+          buttonText: 'SignUp',
         ),
       ),
     );
