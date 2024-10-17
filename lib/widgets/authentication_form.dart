@@ -69,7 +69,7 @@ class AuthenticationForm extends StatelessWidget {
                 child: Text(buttonText),
               )
             ],
-          )
+          ),
         ],
       ),
     );
