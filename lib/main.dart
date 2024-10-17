@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/logIn.dart';
-import 'package:travel_app/screens/signup.dart';
 import 'package:travel_app/screens/tabs.dart';
 
 void main() async {
@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 58, 135, 183)),
       ),
       // home: const TabsScreen(),
-      home: const SignUpScreen(),
+      home: FirebaseAuth.instance.currentUser == null
+          ? const LogInScreen()
+          : const TabsScreen(),
       // home: const LogInScreen(),
     );
   }
