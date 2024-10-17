@@ -48,7 +48,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _goToHomePage(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (ctx) => const TabsScreen(),
       ),
@@ -56,7 +56,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _goToSignUp(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (ctx) => const SignUpScreen(),
       ),

@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _goToLoginPage(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (ctx) => const LogInScreen(),
       ),
