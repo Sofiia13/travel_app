@@ -83,7 +83,6 @@ class _LogInScreenState extends State<LogInScreen> {
               },
             ),
             const SizedBox(height: 20),
-            // Using RichText to display clickable Sign Up
             RichText(
               text: TextSpan(
                 text: "If you don't have an account, please ",
