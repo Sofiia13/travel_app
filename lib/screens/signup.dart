@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_app/screens/logIn.dart';
@@ -75,15 +76,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: AuthenticationForm(
-          authenticateUser: createUserWithEmailAndPassword,
-          formKey: _formKey,
-          onEmailChanged: updateEmail,
-          onPasswordChanged: updatePassword,
-          buttonText: 'SignUp',
-          goTo: () {
-            _goToLoginPage(context);
-          },
+        child: Column(
+          children: [
+            AuthenticationForm(
+              authenticateUser: createUserWithEmailAndPassword,
+              formKey: _formKey,
+              onEmailChanged: updateEmail,
+              onPasswordChanged: updatePassword,
+              buttonText: 'SignUp',
+              goTo: () {
+                _goToLoginPage(context);
+              },
+            ),
+            const SizedBox(height: 20),
+            RichText(
+              text: TextSpan(
+                text: "Already have an account, please ",
+                style: const TextStyle(color: Colors.black),
+                children: [
+                  TextSpan(
+                    text: 'Login',
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        _goToLoginPage(context); // Navigate to SignUpScreen
+                      },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
