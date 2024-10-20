@@ -25,14 +25,51 @@ class _LogInScreenState extends State<LogInScreen> {
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
                 email: emailAddress, password: password);
+
+        _goToHomePage(context);
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+        // Handle specific error codes
+        String errorMessage;
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage =
+                'No user found for that email. Please check your email.';
+            break;
+          case 'wrong-password':
+            errorMessage = 'Incorrect password. Please try again.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'The email address is not valid.';
+            break;
+          case 'invalid-credential':
+            errorMessage = 'The email address or password is not valid.';
+            break;
+          case 'user-disabled':
+            errorMessage = 'This user account has been disabled.';
+            break;
+          case 'too-many-requests':
+            errorMessage = 'Too many requests. Please try again later.';
+            break;
+          default:
+            errorMessage = 'An unexpected error occurred. Please try again.';
         }
+        print('FirebaseAuthException: ${e.code}, Message: ${e.message}');
+
+        showMessage(errorMessage); // Use the custom message
+      } catch (e) {
+        // Handle other exceptions
+        showMessage('An unexpected error occurred: $e');
       }
     }
+  }
+
+  void showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   void updateEmail(String email) {
@@ -79,7 +116,7 @@ class _LogInScreenState extends State<LogInScreen> {
               onPasswordChanged: updatePassword,
               buttonText: 'Login',
               goTo: () {
-                _goToHomePage(context);
+                // _goToHomePage(context);
               },
             ),
             const SizedBox(height: 20),
@@ -96,7 +133,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        _goToSignUp(context); // Navigate to SignUpScreen
+                        _goToSignUp(context);
                       },
                   ),
                 ],
