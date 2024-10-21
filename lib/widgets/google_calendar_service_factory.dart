@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class GoogleCalendarService {
   final GoogleSignIn googleSignInCredentials;
+  CalendarApi? calendarApi; // Field for CalendarApi
 
   GoogleCalendarService({required this.googleSignInCredentials});
 
@@ -33,17 +34,15 @@ class GoogleCalendarService {
           AccessToken(
             'Bearer',
             googleAuth.accessToken!,
-            DateTime.now()
-                .toUtc()
-                .add(Duration(hours: 1)), // Set expiration time
+            DateTime.now().toUtc().add(Duration(hours: 1)),
           ),
           null,
           ['https://www.googleapis.com/auth/calendar'],
         ),
       );
 
-      // Return the Calendar API object
-      return CalendarApi(authClient);
+      calendarApi = CalendarApi(authClient);
+      return calendarApi;
     } catch (e) {
       print('Error signing in and getting Calendar API: $e');
       return null;
@@ -51,11 +50,15 @@ class GoogleCalendarService {
   }
 
   Future<void> createEvent(
-    CalendarApi calendarApi,
     String summary,
     String description,
     String location,
   ) async {
+    if (calendarApi == null) {
+      print('Calendar API is not initialized. Please sign in first.');
+      return;
+    }
+
     try {
       // Create an event
       Event event = Event(
@@ -73,7 +76,7 @@ class GoogleCalendarService {
       );
 
       // Insert the event into the primary calendar
-      await calendarApi.events.insert(event, 'primary');
+      await calendarApi!.events.insert(event, 'primary');
       print('Event created: ${event.summary}');
     } catch (e) {
       print('Error creating event: $e');
@@ -83,6 +86,7 @@ class GoogleCalendarService {
   Future<void> signOut() async {
     await googleSignInCredentials.signOut();
     print('User signed out');
+    calendarApi = null; // Reset the calendarApi on sign out
   }
 }
 
