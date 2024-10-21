@@ -128,7 +128,7 @@ class _CityInfoState extends State<CityInfo> {
                             selectedCategory = value!;
                             _isLoading = true;
                             getPlacesByCategory(
-                                selectedCategory, xCor, yCor, 10);
+                                selectedCategory, xCor, yCor, 20);
                           });
                         },
                       ),
