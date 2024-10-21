@@ -34,9 +34,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Future<void> _signOutAndSignIn() async {
     if (_calendarService != null) {
-      await _calendarService!.signOut(); // Sign out the current user
+      await _calendarService!.signOut();
     }
-    _initializeCalendarService(); // Re-initialize to allow signing in again
+    _initializeCalendarService();
   }
 
   @override
