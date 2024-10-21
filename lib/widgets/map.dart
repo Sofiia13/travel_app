@@ -17,8 +17,8 @@ class MapWidget extends StatelessWidget {
       height: MediaQuery.of(context).size.height / 2.5,
       child: FlutterMap(
         options: MapOptions(
-          center: LatLng(yCor, xCor), // Coordinates for London
-          zoom: 10.0,
+          initialCenter: LatLng(yCor, xCor),
+          initialZoom: 10.0,
         ),
         children: [
           TileLayer(

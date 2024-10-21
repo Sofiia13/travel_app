@@ -33,21 +33,26 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void signOut() async {
     await FirebaseAuth.instance.signOut();
-    setState(() {
-      _goToLoginPage(context);
-    });
+    _goToLoginPage(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = CitiesList();
-    var activePageTitle = 'Choose your city';
-    if (_selectedPageIndex == 1) {
-      activePage = SearchScreen();
-      activePageTitle = 'Search';
-    } else if (_selectedPageIndex == 2) {
-      activePage = CalendarScreen();
-      activePageTitle = 'Calendar';
+    Widget activePage;
+    String activePageTitle;
+
+    switch (_selectedPageIndex) {
+      case 1:
+        activePage = SearchScreen();
+        activePageTitle = 'Search';
+        break;
+      case 2:
+        activePage = CalendarScreen();
+        activePageTitle = 'Calendar';
+        break;
+      default:
+        activePage = CitiesList();
+        activePageTitle = 'Choose your city';
     }
 
     return Scaffold(
@@ -62,7 +67,7 @@ class _TabsScreenState extends State<TabsScreen> {
             onPressed: () {
               signOut();
             },
-          )
+          ),
         ],
       ),
       drawer: Drawer(
