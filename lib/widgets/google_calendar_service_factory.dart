@@ -53,6 +53,8 @@ class GoogleCalendarService {
     String summary,
     String description,
     String location,
+    startTime,
+    endTime,
   ) async {
     if (calendarApi == null) {
       print('Calendar API is not initialized. Please sign in first.');
@@ -65,12 +67,12 @@ class GoogleCalendarService {
         summary: summary,
         description: description,
         start: EventDateTime(
-          dateTime: DateTime.now().add(Duration(days: 1)), // Start time
-          timeZone: 'UTC', // Timezone
+          dateTime: startTime,
+          timeZone: 'UTC',
         ),
         end: EventDateTime(
-          dateTime: DateTime.now().add(Duration(days: 1, hours: 1)), // End time
-          timeZone: 'UTC', // Timezone
+          dateTime: endTime,
+          timeZone: 'UTC',
         ),
         location: location,
       );
