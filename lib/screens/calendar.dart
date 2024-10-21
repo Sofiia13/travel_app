@@ -22,7 +22,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final calendarApi = await service.signInAndGetCalendarApi();
 
     if (calendarApi != null) {
-      // You can use calendarApi to fetch or create events
       print("Successfully authenticated and obtained Calendar API");
     } else {
       print("Failed to authenticate");
@@ -33,10 +32,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  Future<void> _signOutAndSignIn() async {
+    if (_calendarService != null) {
+      await _calendarService!.signOut(); // Sign out the current user
+    }
+    _initializeCalendarService(); // Re-initialize to allow signing in again
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Google Calendar")),
+      appBar: AppBar(
+        title: Text("Google Calendar"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _signOutAndSignIn, // Sign out and allow re-signing
+          ),
+        ],
+      ),
       body: Center(
         child: _calendarService == null
             ? CircularProgressIndicator()
