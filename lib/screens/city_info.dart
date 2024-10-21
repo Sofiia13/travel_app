@@ -18,6 +18,7 @@ class _CityInfoState extends State<CityInfo> {
   List<dynamic> _cityCoordinates = [];
   List<dynamic> _places = [];
   List<dynamic> _placeName = [];
+  List<dynamic> _placeLocation = [];
 
   int limit = 10;
   double? xCor;
@@ -88,6 +89,9 @@ class _CityInfoState extends State<CityInfo> {
         _placeName = _places
             .map((place) => place['properties']['address_line1'])
             .toList();
+        _placeLocation = _places
+            .map((place) => place['properties']['address_line2'])
+            .toList();
         _isLoading = false;
       });
     } else {
@@ -139,6 +143,7 @@ class _CityInfoState extends State<CityInfo> {
                         itemBuilder: (context, index) {
                           return FilteredPlaces(
                             name: _placeName[index],
+                            location: _placeLocation[index],
                           );
                         },
                       ),
