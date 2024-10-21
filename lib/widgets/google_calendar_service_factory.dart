@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart'; // For kIsWeb check
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
-import 'package:googleapis_auth/auth_io.dart'; // For GoogleAuthClient
+import 'package:googleapis_auth/auth_io.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 
@@ -20,6 +20,8 @@ class GoogleCalendarService {
         return null;
       }
 
+      print('User email: ${account.email}');
+
       // Get the authentication credentials
       final GoogleSignInAuthentication googleAuth =
           await account.authentication;
@@ -31,7 +33,9 @@ class GoogleCalendarService {
           AccessToken(
             'Bearer',
             googleAuth.accessToken!,
-            DateTime.now().add(Duration(hours: 1)),
+            DateTime.now()
+                .toUtc()
+                .add(Duration(hours: 1)), // Set expiration time
           ),
           null,
           ['https://www.googleapis.com/auth/calendar'],
@@ -45,6 +49,41 @@ class GoogleCalendarService {
       return null;
     }
   }
+
+  Future<void> createEvent(
+    CalendarApi calendarApi,
+    String summary,
+    String description,
+    String location,
+  ) async {
+    try {
+      // Create an event
+      Event event = Event(
+        summary: summary,
+        description: description,
+        start: EventDateTime(
+          dateTime: DateTime.now().add(Duration(days: 1)), // Start time
+          timeZone: 'UTC', // Timezone
+        ),
+        end: EventDateTime(
+          dateTime: DateTime.now().add(Duration(days: 1, hours: 1)), // End time
+          timeZone: 'UTC', // Timezone
+        ),
+        location: location,
+      );
+
+      // Insert the event into the primary calendar
+      await calendarApi.events.insert(event, 'primary');
+      print('Event created: ${event.summary}');
+    } catch (e) {
+      print('Error creating event: $e');
+    }
+  }
+
+  Future<void> signOut() async {
+    await googleSignInCredentials.signOut();
+    print('User signed out');
+  }
 }
 
 class GoogleCalendarServiceFactory {
@@ -53,8 +92,7 @@ class GoogleCalendarServiceFactory {
       // Web OAuth client ID
       return GoogleCalendarService(
         googleSignInCredentials: GoogleSignIn(
-          clientId:
-              '278388737195-srsc36jfsjho66vaf1r18k63n5ai20u0.apps.googleusercontent.com',
+          clientId: 'YOUR_WEB_CLIENT_ID',
           scopes: <String>[CalendarApi.calendarScope],
         ),
       );
@@ -65,15 +103,6 @@ class GoogleCalendarServiceFactory {
           scopes: <String>[CalendarApi.calendarScope],
         ),
       );
-
-      // } else if (Platform.isIOS) {
-      //   // iOS OAuth client ID
-      //   return GoogleCalendarService(
-      //     googleSignInCredentials: GoogleSignIn(
-      //       clientId: 'YOUR_IOS_CLIENT_ID', // Replace with your iOS client ID
-      //       scopes: <String>[CalendarApi.calendarScope],
-      //     ),
-      //   );
     } else {
       throw Exception('Unsupported platform');
     }
