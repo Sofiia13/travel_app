@@ -80,7 +80,7 @@ class GoogleCalendarService {
       );
 
       // Insert the event into the primary calendar
-      await calendarApi!.events.insert(event, 'primary');
+      await calendarApi!.events.insert(event, 'primary', sendUpdates: 'all');
       print('Event created: ${event.summary}');
     } catch (e) {
       print('Error creating event: $e');
