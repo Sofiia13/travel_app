@@ -7,10 +7,12 @@ class FilteredPlaces extends StatelessWidget {
     super.key,
     required this.name,
     required this.location,
+    required this.placeId,
   }) : googleCalendarService = GoogleCalendarServiceFactory.create();
 
   final String name;
   final String location;
+  final String placeId;
   final GoogleCalendarService googleCalendarService;
 
   void _selectPlace(BuildContext context, String placeName) {
@@ -19,6 +21,7 @@ class FilteredPlaces extends StatelessWidget {
         builder: (ctx) => PlaceInfoScreen(
           placeName: placeName,
           location: location,
+          placeId: placeId,
           googleCalendarService: googleCalendarService,
         ),
       ),

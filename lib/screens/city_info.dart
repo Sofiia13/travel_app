@@ -19,6 +19,7 @@ class _CityInfoState extends State<CityInfo> {
   List<dynamic> _places = [];
   List<dynamic> _placeName = [];
   List<dynamic> _placeLocation = [];
+  List<dynamic> _placeId = [];
 
   int limit = 10;
   double? xCor;
@@ -92,6 +93,10 @@ class _CityInfoState extends State<CityInfo> {
         _placeLocation = _places
             .map((place) => place['properties']['address_line2'])
             .toList();
+        _placeId = _places
+            .map(
+                (place) => place['properties']['datasource']['raw']['wikidata'])
+            .toList();
         _isLoading = false;
       });
     } else {
@@ -114,7 +119,9 @@ class _CityInfoState extends State<CityInfo> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                       child: MapWidget(xCor: xCor!, yCor: yCor!),
                     ),
                     Padding(
@@ -141,9 +148,12 @@ class _CityInfoState extends State<CityInfo> {
                       child: ListView.builder(
                         itemCount: _placeName.length,
                         itemBuilder: (context, index) {
+                          final placeId =
+                              _placeId.isNotEmpty ? _placeId[index] : null;
                           return FilteredPlaces(
                             name: _placeName[index],
                             location: _placeLocation[index],
+                            placeId: placeId ?? '',
                           );
                         },
                       ),

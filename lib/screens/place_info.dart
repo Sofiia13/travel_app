@@ -3,17 +3,20 @@ import 'package:googleapis/calendar/v3.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/widgets/create_event_dialog.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
+import 'package:travel_app/widgets/place_photo.dart';
 
 class PlaceInfoScreen extends StatefulWidget {
   const PlaceInfoScreen({
     super.key,
     required this.placeName,
     required this.location,
+    required this.placeId,
     required this.googleCalendarService,
   });
 
   final String placeName;
   final String location;
+  final String placeId;
   final GoogleCalendarService googleCalendarService;
 
   @override
@@ -54,6 +57,7 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            PlacePhoto(placeId: widget.placeId),
             Text('Some place info'),
             Text('Bla bla bla'),
             CreateEventDialog(
