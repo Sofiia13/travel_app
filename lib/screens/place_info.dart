@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/calendar/v3.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 
@@ -20,6 +21,9 @@ class PlaceInfoScreen extends StatefulWidget {
 
 class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
   GoogleCalendarService? _calendarService;
+
+  List<EventAttendee>? attendees = [];
+  final TextEditingController attendeeController = TextEditingController();
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
@@ -51,14 +55,15 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
       print('Calendar service is not initialized');
       return;
     }
+    if (attendeeController.text.isNotEmpty) {
+      _addAttendees(attendeeController.text);
+    }
 
     DateTime? selectedDate = _getDateFromString(dateController.text);
     TimeOfDay? startTime = _getTimeOfDayFromString(startTimeController.text);
     TimeOfDay? endTime = _getTimeOfDayFromString(endTimeController.text);
 
-    // Check if all necessary values are selected
     if (selectedDate != null && startTime != null && endTime != null) {
-      // Combine date and time into DateTime objects
       DateTime startDateTime = DateTime(
         selectedDate.year,
         selectedDate.month,
@@ -83,6 +88,7 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
           'Location: ${widget.location}',
           startDateTime,
           endDateTime,
+          attendees!.isNotEmpty ? attendees : null,
         );
         print("Event created successfully.");
         ScaffoldMessenger.of(context).showSnackBar(
@@ -194,6 +200,39 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
     }
   }
 
+  bool _isValidEmail(String email) {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  void _addAttendees(String emails) {
+    if (emails.isNotEmpty) {
+      // Split the input by comma and trim whitespace
+      List<String> emailList =
+          emails.split(',').map((email) => email.trim()).toList();
+
+      setState(() {
+        for (String email in emailList) {
+          if (_isValidEmail(email)) {
+            attendees?.add(EventAttendee(email: email));
+            print('Added attendee: $email');
+          } else {
+            print('Invalid email: $email'); // Log invalid email
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Invalid email: $email'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+        }
+        print('Attendees now: ${attendees!.map((a) => a.email).toList()}');
+        attendeeController.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,11 +250,12 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                 context: context,
                 builder: (BuildContext context) => Dialog(
                   child: Container(
+                    padding: EdgeInsets.all(20),
                     margin: const EdgeInsets.all(10),
                     width: 200,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: ListView(
+                      // mainAxisSize: MainAxisSize.min,
+                      // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Create Event',
@@ -258,6 +298,16 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                           onTap: _selectEndTime,
                         ),
                         const SizedBox(height: 10),
+                        TextField(
+                          controller: attendeeController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Add Attendee Email',
+                            filled: true,
+                            prefixIcon: Icon(Icons.people_alt),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             TextButton(
@@ -266,6 +316,11 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                             ),
                             OutlinedButton(
                               onPressed: () {
+                                String emails = attendeeController.text;
+                                if (emails.isNotEmpty) {
+                                  _addAttendees(
+                                      emails); // Add the email to the attendees list
+                                }
                                 createCalendarEvent();
                                 Navigator.pop(context);
                               },

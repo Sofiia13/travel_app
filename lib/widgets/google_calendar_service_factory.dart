@@ -55,6 +55,7 @@ class GoogleCalendarService {
     String location,
     startTime,
     endTime,
+    List<EventAttendee>? attendees,
   ) async {
     if (calendarApi == null) {
       print('Calendar API is not initialized. Please sign in first.');
@@ -75,6 +76,7 @@ class GoogleCalendarService {
           timeZone: 'UTC',
         ),
         location: location,
+        attendees: attendees != null && attendees.isNotEmpty ? attendees : null,
       );
 
       // Insert the event into the primary calendar
