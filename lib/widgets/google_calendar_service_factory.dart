@@ -90,7 +90,7 @@ class GoogleCalendarService {
   Future<void> signOut() async {
     await googleSignInCredentials.signOut();
     print('User signed out');
-    calendarApi = null; // Reset the calendarApi on sign out
+    calendarApi = null;
   }
 }
 
