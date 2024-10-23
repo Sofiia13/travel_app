@@ -4,6 +4,7 @@ import 'package:travel_app/screens/calendar.dart';
 import 'package:travel_app/screens/cities_list.dart';
 import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/search.dart';
+import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -16,6 +17,7 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
+  GoogleCalendarService calendarService = GoogleCalendarServiceFactory.create();
 
   void _selectPage(int index) {
     setState(() {
@@ -31,7 +33,10 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void signOut() async {
+  void signOut(GoogleCalendarService calendarService) async {
+    await calendarService.signOut();
+    print('Google Calendar signed out.');
+
     await FirebaseAuth.instance.signOut();
     _goToLoginPage(context);
   }
@@ -65,7 +70,7 @@ class _TabsScreenState extends State<TabsScreen> {
               color: Colors.black,
             ),
             onPressed: () {
-              signOut();
+              signOut(calendarService);
             },
           ),
         ],
