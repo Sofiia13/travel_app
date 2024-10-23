@@ -57,7 +57,8 @@ class _PlacePhotoState extends State<PlacePhoto> {
     return Center(
       child: imageUrl != null
           ? Image.network(imageUrl!)
-          : CircularProgressIndicator(),
+          // : CircularProgressIndicator(),
+          : Text(''),
     );
   }
 }
