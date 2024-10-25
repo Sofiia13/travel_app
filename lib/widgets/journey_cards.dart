@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/screens/tabs.dart';
 
 class JourneyCards extends StatelessWidget {
-  const JourneyCards({super.key, required this.name});
+  const JourneyCards({super.key, required this.name, required this.journeyId});
 
   final String name;
+  final String journeyId;
 
   @override
   Widget build(BuildContext context) {
