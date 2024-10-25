@@ -58,10 +58,10 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
             final partners = journeyData['partners'] as List<dynamic>? ?? [];
             final attendees = partners.map((email) => email as String).toList();
 
-            // Check if the current user is either the organizer or in the partners list
             if (organizerName == currentUser ||
                 attendees.contains(currentUser)) {
               journeys.add({
+                'journeyId': key,
                 'journeyName': journeyName,
                 'organizerName': organizerName,
                 'attendees': attendees,
@@ -144,13 +144,20 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
           Expanded(
             child: journeys.isEmpty // Check if journeys list is empty
                 ? Center(
-                    child:
-                        Text('No journeys found.')) // Show a message if empty
+                    child: Text('No journeys found.'),
+                  )
                 : ListView.builder(
                     itemCount: journeys.length,
                     itemBuilder: (context, index) {
                       final journey = journeys[index];
-                      return JourneyCards(name: journey['journeyName']);
+                      final journeyId = journey['journeyId'] as String? ?? '';
+                      final journeyName = journey['journeyName'] as String? ??
+                          'Unnamed Journey';
+
+                      return JourneyCards(
+                        name: journeyName,
+                        journeyId: journeyId,
+                      );
                     },
                   ),
           ),
