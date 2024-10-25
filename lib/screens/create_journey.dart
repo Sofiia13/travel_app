@@ -13,13 +13,14 @@ class CreateJourneyScreen extends StatefulWidget {
 
 class _CreateJourneyState extends State<CreateJourneyScreen> {
   List<Map<String, dynamic>> journeys = [];
+  String currentUser = FirebaseAuth.instance.currentUser!.email.toString();
 
   void _addJourney(String journeyName, List<String> attendees) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys").push();
 
     await ref.set({
       'journeyName': journeyName,
-      'organizatorName': FirebaseAuth.instance.currentUser!.email.toString(),
+      'organizatorName': currentUser,
       'partners': attendees,
     });
 
@@ -33,15 +34,16 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         "Journey '$journeyName' with attendees $attendees saved to Firebase.");
   }
 
-  void _fetchJourneys() async {
+  void _fetchJourneys() {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys");
 
-    ref.once().then((DatabaseEvent event) {
+    // Use onValue to listen for real-time changes
+    ref.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       print("Raw data from Firebase: $data");
 
       if (data is Map<dynamic, dynamic>) {
-        journeys = [];
+        journeys = []; // Clear previous journeys
 
         data.forEach((key, value) {
           if (value is Map<dynamic, dynamic>) {
@@ -51,21 +53,25 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
                 journeyData['journeyName'] as String? ?? 'Unnamed Journey';
             final organizerName = journeyData['organizatorName'] as String? ??
                 'Unknown Organizer';
-
             final partners = journeyData['partners'] as List<dynamic>? ?? [];
             final attendees = partners.map((email) => email as String).toList();
 
-            journeys.add({
-              'journeyName': journeyName,
-              'organizerName': organizerName,
-              'attendees': attendees,
-            });
+            if (organizerName == currentUser ||
+                attendees.contains(currentUser)) {
+              journeys.add({
+                'journeyName': journeyName,
+                'organizerName': organizerName,
+                'attendees': attendees,
+              });
+            }
           }
         });
       } else {
         print("Data is not a Map: $data");
       }
-    }).catchError((error) {
+
+      setState(() {}); // Update the UI
+    }, onError: (error) {
       print("Error fetching journeys: $error");
     });
   }
