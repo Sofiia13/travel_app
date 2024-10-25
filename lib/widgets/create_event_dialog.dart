@@ -123,6 +123,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     dateController.dispose();
     startTimeController.dispose();
     endTimeController.dispose();
+    attendeeController.dispose();
     super.dispose();
   }
 
