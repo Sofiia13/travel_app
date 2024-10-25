@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:travel_app/widgets/create_journey_form.dart';
@@ -18,7 +19,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     await ref.set({
       'journeyName': journeyName,
-      'organizatorName': 'Organizer Name',
+      'organizatorName': FirebaseAuth.instance.currentUser!.email.toString(),
       'partners': attendees,
     });
 
@@ -37,40 +38,35 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     ref.once().then((DatabaseEvent event) {
       final data = event.snapshot.value;
-      print("Raw data from Firebase: $data"); // Debugging
+      print("Raw data from Firebase: $data");
 
       if (data is Map<dynamic, dynamic>) {
-        // Check if data is a Map
-        journeys = []; // Initialize journeys as an empty list
+        journeys = [];
 
         data.forEach((key, value) {
           if (value is Map<dynamic, dynamic>) {
-            // Check if the value is a Map
             final journeyData = value;
 
-            // Safely get the journey name
             final journeyName =
                 journeyData['journeyName'] as String? ?? 'Unnamed Journey';
             final organizerName = journeyData['organizatorName'] as String? ??
                 'Unknown Organizer';
 
-            // Safely get partners, default to empty list if null
             final partners = journeyData['partners'] as List<dynamic>? ?? [];
             final attendees = partners.map((email) => email as String).toList();
 
             journeys.add({
               'journeyName': journeyName,
               'organizerName': organizerName,
-              'attendees': attendees, // List of strings for emails
+              'attendees': attendees,
             });
           }
         });
       } else {
-        print("Data is not a Map: $data"); // Log if data is not a Map
+        print("Data is not a Map: $data");
       }
-      setState(() {}); // Update the UI
     }).catchError((error) {
-      print("Error fetching journeys: $error"); // Log errors
+      print("Error fetching journeys: $error");
     });
   }
 
@@ -85,6 +81,25 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create your journey'),
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  FirebaseAuth.instance.currentUser!.email.toString(),
+                  style: const TextStyle(fontSize: 21),
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Dummy data'),
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
