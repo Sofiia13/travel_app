@@ -42,10 +42,10 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     ref.once().then((DatabaseEvent event) {
       final data = event.snapshot.value;
-      print("Raw data from Firebase: $data"); // Log the raw data
+      print("Raw data from Firebase: $data");
 
       if (data is Map<dynamic, dynamic>) {
-        journeys = []; // Clear the existing journeys
+        journeys = [];
 
         data.forEach((key, value) {
           if (value is Map<dynamic, dynamic>) {
@@ -73,8 +73,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         print("Data is not a Map: $data");
       }
 
-      // Check the journeys after fetching
-      print("Fetched journeys: $journeys"); // Log the journeys list
+      print("Fetched journeys: $journeys");
     }).catchError((error) {
       print("Error fetching journeys: $error");
     });
@@ -105,8 +104,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
               };
             }).toList() ??
             [];
-
-        setState(() {}); // Update the UI when data changes
       });
     } else {
       print("User is not logged in.");
@@ -142,7 +139,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         children: [
           CreateJourneyForm(onSubmit: _addJourney),
           Expanded(
-            child: journeys.isEmpty // Check if journeys list is empty
+            child: journeys.isEmpty
                 ? Center(
                     child: Text('No journeys found.'),
                   )
