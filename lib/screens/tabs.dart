@@ -75,25 +75,6 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            DrawerHeader(
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  FirebaseAuth.instance.currentUser!.email.toString(),
-                  style: const TextStyle(fontSize: 21),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Dummy data'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
