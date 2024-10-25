@@ -18,6 +18,8 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
   void _addJourney(String journeyName, List<String> attendees) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys").push();
 
+    String journeyId = ref.key!;
+
     await ref.set({
       'journeyName': journeyName,
       'organizatorName': currentUser,
@@ -26,6 +28,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     setState(() {
       journeys.insert(0, {
+        'journeyId': journeyId,
         'journeyName': journeyName,
       });
     });
@@ -34,16 +37,15 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         "Journey '$journeyName' with attendees $attendees saved to Firebase.");
   }
 
-  void _fetchJourneys() {
+  void _fetchJourneys() async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys");
 
-    // Use onValue to listen for real-time changes
-    ref.onValue.listen((DatabaseEvent event) {
+    ref.once().then((DatabaseEvent event) {
       final data = event.snapshot.value;
-      print("Raw data from Firebase: $data");
+      print("Raw data from Firebase: $data"); // Log the raw data
 
       if (data is Map<dynamic, dynamic>) {
-        journeys = []; // Clear previous journeys
+        journeys = []; // Clear the existing journeys
 
         data.forEach((key, value) {
           if (value is Map<dynamic, dynamic>) {
@@ -56,6 +58,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
             final partners = journeyData['partners'] as List<dynamic>? ?? [];
             final attendees = partners.map((email) => email as String).toList();
 
+            // Check if the current user is either the organizer or in the partners list
             if (organizerName == currentUser ||
                 attendees.contains(currentUser)) {
               journeys.add({
@@ -70,8 +73,9 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         print("Data is not a Map: $data");
       }
 
-      setState(() {}); // Update the UI
-    }, onError: (error) {
+      // Check the journeys after fetching
+      print("Fetched journeys: $journeys"); // Log the journeys list
+    }).catchError((error) {
       print("Error fetching journeys: $error");
     });
   }
@@ -79,7 +83,34 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchJourneys();
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      journeys = [];
+      FirebaseDatabase.instance.ref("journeys").onValue.listen((event) {
+        final data = event.snapshot.value as Map<dynamic, dynamic>?;
+
+        journeys = data?.entries.where((entry) {
+              final value = entry.value as Map<dynamic, dynamic>;
+              return value['organizatorName'] == currentUser ||
+                  (value['partners'] as List<dynamic>?)
+                          ?.contains(currentUser) ==
+                      true;
+            }).map((entry) {
+              final value = entry.value as Map<dynamic, dynamic>;
+              return {
+                'journeyName': value['journeyName'] ?? 'Unnamed Journey',
+                'organizerName':
+                    value['organizatorName'] ?? 'Unknown Organizer',
+                'attendees': List<String>.from(value['partners'] ?? []),
+              };
+            }).toList() ??
+            [];
+
+        setState(() {}); // Update the UI when data changes
+      });
+    } else {
+      print("User is not logged in.");
+    }
   }
 
   @override
@@ -111,13 +142,17 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         children: [
           CreateJourneyForm(onSubmit: _addJourney),
           Expanded(
-            child: ListView.builder(
-              itemCount: journeys.length,
-              itemBuilder: (context, index) {
-                final journey = journeys[index];
-                return JourneyCards(name: journey['journeyName']);
-              },
-            ),
+            child: journeys.isEmpty // Check if journeys list is empty
+                ? Center(
+                    child:
+                        Text('No journeys found.')) // Show a message if empty
+                : ListView.builder(
+                    itemCount: journeys.length,
+                    itemBuilder: (context, index) {
+                      final journey = journeys[index];
+                      return JourneyCards(name: journey['journeyName']);
+                    },
+                  ),
           ),
         ],
       ),
