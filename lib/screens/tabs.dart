@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/calendar.dart';
 import 'package:travel_app/screens/cities_list.dart';
+import 'package:travel_app/screens/favorites.dart';
 import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/search.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
@@ -52,8 +53,8 @@ class _TabsScreenState extends State<TabsScreen> {
         activePageTitle = 'Search';
         break;
       case 2:
-        activePage = CalendarScreen();
-        activePageTitle = 'Calendar';
+        activePage = FavoritesScreen();
+        activePageTitle = 'Favorites';
         break;
       default:
         activePage = CitiesList();
@@ -89,8 +90,8 @@ class _TabsScreenState extends State<TabsScreen> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendar',
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
         ],
       ),
