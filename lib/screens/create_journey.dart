@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:travel_app/widgets/create_journey_form.dart';
 
 class CreateJourneyScreen extends StatefulWidget {
   const CreateJourneyScreen({super.key});
@@ -8,25 +10,29 @@ class CreateJourneyScreen extends StatefulWidget {
 }
 
 class _CreateJourneyState extends State<CreateJourneyScreen> {
+  void _addJourney(String journeyName, List<String> attendees) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("journeys");
+
+    await ref.set({
+      'journeyName': journeyName,
+      'organizatorName': 'Organizer Name',
+      'partners': attendees,
+    });
+
+    print(
+        "Journey '$journeyName' with attendees $attendees saved to Firebase.");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create your journey'),
       ),
-      body: Container(
-        alignment: Alignment.bottomRight,
-        padding: EdgeInsets.all(20),
-        // decoration: BoxDecoration(
-        //     border: Border.all(width: 4),
-        //   ),
-        child: IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
-        ),
+      body: CreateJourneyForm(
+        onSubmit: (journeyName, attendees) {
+          _addJourney(journeyName, attendees);
+        },
       ),
     );
   }
