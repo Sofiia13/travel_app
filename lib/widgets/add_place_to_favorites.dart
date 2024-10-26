@@ -7,11 +7,13 @@ class AddPlaceToFavorites extends StatefulWidget {
     required this.journeyId,
     required this.placeName,
     required this.placeLocation,
+    required this.placeId,
   });
 
   final String journeyId;
   final String placeName;
   final String placeLocation;
+  final String placeId;
 
   @override
   State<AddPlaceToFavorites> createState() => _AddPlaceToFavoritesState();
@@ -72,6 +74,7 @@ class _AddPlaceToFavoritesState extends State<AddPlaceToFavorites> {
         'journeyId': widget.journeyId,
         'placeName': widget.placeName,
         'placeLocation': widget.placeLocation,
+        'placeId': widget.placeId,
       });
       setState(() {
         isFavorite = true;
