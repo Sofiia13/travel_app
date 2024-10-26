@@ -22,7 +22,7 @@ class FilteredPlaces extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => PlaceInfoScreen(
           placeName: placeName,
-          location: location,
+          placeLocation: location,
           placeId: placeId,
           journeyId: journeyId,
           googleCalendarService: googleCalendarService,

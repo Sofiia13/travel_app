@@ -10,14 +10,14 @@ class PlaceInfoScreen extends StatefulWidget {
   const PlaceInfoScreen({
     super.key,
     required this.placeName,
-    required this.location,
+    required this.placeLocation,
     required this.placeId,
     required this.googleCalendarService,
     required this.journeyId,
   });
 
   final String placeName;
-  final String location;
+  final String placeLocation;
   final String placeId;
   final GoogleCalendarService googleCalendarService;
   final String journeyId;
@@ -71,11 +71,12 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                   AddPlaceToFavorites(
                     journeyId: widget.journeyId,
                     placeName: widget.placeName,
-                    placeLocation: widget.location,
+                    placeLocation: widget.placeLocation,
+                    placeId: widget.placeId,
                   ),
                   CreateEventDialog(
                     name: widget.placeName,
-                    location: widget.location,
+                    location: widget.placeLocation,
                     googleCalendarService: widget.googleCalendarService,
                   ),
                 ],
