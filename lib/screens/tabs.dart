@@ -60,7 +60,9 @@ class _TabsScreenState extends State<TabsScreen> {
         activePageTitle = 'Search';
         break;
       case 2:
-        activePage = FavoritesScreen();
+        activePage = FavoritesScreen(
+          journeyId: widget.journeyId,
+        );
         activePageTitle = 'Favorites';
         break;
       default:
