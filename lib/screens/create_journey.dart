@@ -45,7 +45,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
       print("Raw data from Firebase: $data");
 
       if (data is Map<dynamic, dynamic>) {
-        journeys = [];
+        List<Map<String, dynamic>> initialJourneys = [];
 
         data.forEach((key, value) {
           if (value is Map<dynamic, dynamic>) {
@@ -60,7 +60,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
             if (organizerName == currentUser ||
                 attendees.contains(currentUser)) {
-              journeys.add({
+              initialJourneys.add({
                 'journeyId': key,
                 'journeyName': journeyName,
                 'organizerName': organizerName,
@@ -69,11 +69,14 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
             }
           }
         });
+
+        // Оновлюємо journeys один раз, коли програма запускається
+        setState(() {
+          journeys = initialJourneys;
+        });
       } else {
         print("Data is not a Map: $data");
       }
-
-      print("Fetched journeys: $journeys");
     }).catchError((error) {
       print("Error fetching journeys: $error");
     });
@@ -83,31 +86,28 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
   void initState() {
     super.initState();
 
+    // Завантажуємо початковий список journeys один раз при запуску
     if (FirebaseAuth.instance.currentUser != null) {
-      journeys = [];
-      FirebaseDatabase.instance.ref("journeys").onValue.listen((event) {
-        final data = event.snapshot.value as Map<dynamic, dynamic>?;
-
-        journeys = data?.entries.where((entry) {
-              final value = entry.value as Map<dynamic, dynamic>;
-              return value['organizatorName'] == currentUser ||
-                  (value['partners'] as List<dynamic>?)
-                          ?.contains(currentUser) ==
-                      true;
-            }).map((entry) {
-              final value = entry.value as Map<dynamic, dynamic>;
-              return {
-                'journeyName': value['journeyName'] ?? 'Unnamed Journey',
-                'organizerName':
-                    value['organizatorName'] ?? 'Unknown Organizer',
-                'attendees': List<String>.from(value['partners'] ?? []),
-              };
-            }).toList() ??
-            [];
-      });
+      _fetchJourneys();
+      _subscribeToJourneys();
     } else {
       print("User is not logged in.");
     }
+  }
+
+  void _subscribeToJourneys() {
+    final journeyRef = FirebaseDatabase.instance.ref("journeys");
+
+    journeyRef.onValue.listen((event) {
+      setState(() {
+        _fetchJourneys();
+      });
+
+      print("No journeys found for the user.");
+      setState(() {
+        journeys = [];
+      });
+    });
   }
 
   @override
