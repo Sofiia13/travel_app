@@ -131,9 +131,10 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
                           String emails = attendeeController.text;
                           _addAttendees(emails);
 
-                          // Pass journey name and nullable attendees list to the callback
                           widget.onSubmit(journeyName, attendees ?? []);
 
+                          nameController.clear();
+                          attendeeController.clear();
                           Navigator.pop(context);
                         },
                         child: const Text('Create Journey'),
