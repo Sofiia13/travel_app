@@ -8,7 +8,12 @@ import 'package:travel_app/screens/search.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+  const TabsScreen({
+    super.key,
+    required this.journeyId,
+  });
+
+  final String journeyId;
 
   @override
   State<TabsScreen> createState() {
@@ -49,7 +54,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
     switch (_selectedPageIndex) {
       case 1:
-        activePage = SearchScreen();
+        activePage = SearchScreen(
+          journeyId: widget.journeyId,
+        );
         activePageTitle = 'Search';
         break;
       case 2:
@@ -57,7 +64,9 @@ class _TabsScreenState extends State<TabsScreen> {
         activePageTitle = 'Favorites';
         break;
       default:
-        activePage = CitiesList();
+        activePage = CitiesList(
+          journeyId: widget.journeyId,
+        );
         activePageTitle = 'Choose your city';
     }
 

@@ -6,7 +6,12 @@ import 'package:travel_app/screens/city_info.dart';
 import 'package:travel_app/widgets/cards.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({
+    super.key,
+    required this.journeyId,
+  });
+
+  final String journeyId;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -98,6 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
       MaterialPageRoute(
         builder: (ctx) => CityInfo(
           cityName: cityName,
+          journeyId: widget.journeyId,
         ),
       ),
     );

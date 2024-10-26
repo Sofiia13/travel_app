@@ -8,12 +8,14 @@ class FilteredPlaces extends StatelessWidget {
     required this.name,
     required this.location,
     required this.placeId,
+    required this.journeyId,
   }) : googleCalendarService = GoogleCalendarServiceFactory.create();
 
   final String name;
   final String location;
   final String placeId;
   final GoogleCalendarService googleCalendarService;
+  final String journeyId;
 
   void _selectPlace(BuildContext context, String placeName) {
     Navigator.of(context).push(
@@ -22,6 +24,7 @@ class FilteredPlaces extends StatelessWidget {
           placeName: placeName,
           location: location,
           placeId: placeId,
+          journeyId: journeyId,
           googleCalendarService: googleCalendarService,
         ),
       ),

@@ -9,11 +9,13 @@ class PlacesListview extends StatefulWidget {
     required this.selectedCategory,
     required this.xCor,
     required this.yCor,
+    required this.journeyId,
   });
 
   final String? selectedCategory;
   final double xCor;
   final double yCor;
+  final String journeyId;
 
   @override
   State<PlacesListview> createState() => _PlacesListviewState();
@@ -77,6 +79,7 @@ class _PlacesListviewState extends State<PlacesListview> {
           name: place['address_line1'] ?? 'Unknown',
           location: place['address_line2'] ?? 'Unknown',
           placeId: place['datasource']['raw']['wikidata'] ?? '',
+          journeyId: widget.journeyId,
         );
       },
     );

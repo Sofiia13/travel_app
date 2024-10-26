@@ -8,9 +8,11 @@ class CityInfo extends StatefulWidget {
   const CityInfo({
     super.key,
     required this.cityName,
+    required this.journeyId,
   });
 
   final String cityName;
+  final String journeyId;
 
   @override
   State<CityInfo> createState() => _CityInfoState();
@@ -103,6 +105,7 @@ class _CityInfoState extends State<CityInfo> {
                         selectedCategory: selectedCategory,
                         xCor: xCor!,
                         yCor: yCor!,
+                        journeyId: widget.journeyId,
                       ),
                     ),
                   ],

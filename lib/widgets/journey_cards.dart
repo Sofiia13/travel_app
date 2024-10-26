@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/screens/tabs.dart';
 
 class JourneyCards extends StatelessWidget {
-  const JourneyCards({super.key, required this.name, required this.journeyId});
+  const JourneyCards({
+    super.key,
+    required this.name,
+    required this.journeyId,
+  });
 
   final String name;
   final String journeyId;
@@ -12,7 +16,9 @@ class JourneyCards extends StatelessWidget {
     void _goToHomePage(BuildContext context) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => const TabsScreen(),
+          builder: (ctx) => TabsScreen(
+            journeyId: journeyId,
+          ),
         ),
       );
     }

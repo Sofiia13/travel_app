@@ -6,7 +6,12 @@ import 'package:travel_app/widgets/cards.dart';
 import 'package:http/http.dart' as http;
 
 class CitiesList extends StatefulWidget {
-  const CitiesList({super.key});
+  const CitiesList({
+    super.key,
+    required this.journeyId,
+  });
+
+  final String journeyId;
 
   @override
   State<CitiesList> createState() => _CitiesListState();
@@ -60,11 +65,12 @@ class _CitiesListState extends State<CitiesList> {
   //   print(data); // Do something with the data
   // }
 
-  void _selectCity(BuildContext context, String cityName) {
+  void _selectCity(BuildContext context, String cityName, String journeyId) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => CityInfo(
           cityName: cityName,
+          journeyId: journeyId,
         ),
       ),
     );
@@ -93,6 +99,7 @@ class _CitiesListState extends State<CitiesList> {
                 _selectCity(
                   context,
                   country['capital'],
+                  widget.journeyId,
                 );
               },
             );
