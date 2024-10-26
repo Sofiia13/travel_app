@@ -13,12 +13,14 @@ class PlaceInfoScreen extends StatefulWidget {
     required this.location,
     required this.placeId,
     required this.googleCalendarService,
+    required this.journeyId,
   });
 
   final String placeName;
   final String location;
   final String placeId;
   final GoogleCalendarService googleCalendarService;
+  final String journeyId;
 
   @override
   State<PlaceInfoScreen> createState() => _PlaceInfoScreenState();
@@ -66,7 +68,11 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  AddPlaceToFavorites(),
+                  AddPlaceToFavorites(
+                    journeyId: widget.journeyId,
+                    placeName: widget.placeName,
+                    placeLocation: widget.location,
+                  ),
                   CreateEventDialog(
                     name: widget.placeName,
                     location: widget.location,
