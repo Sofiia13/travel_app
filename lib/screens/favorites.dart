@@ -1,15 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_app/screens/place_info.dart';
+import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 // import 'package:googleapis/servicemanagement/v1.dart';
 
 class FavoritesScreen extends StatefulWidget {
-  const FavoritesScreen({
+  FavoritesScreen({
     super.key,
     required this.journeyId,
-  });
+  }) : googleCalendarService = GoogleCalendarServiceFactory.create();
 
   final String journeyId;
+  final GoogleCalendarService googleCalendarService;
 
   @override
   State<FavoritesScreen> createState() => _FavoritesScreenState();
@@ -20,6 +23,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   final DatabaseReference _databaseRef =
       FirebaseDatabase.instance.ref("favorite_places");
   List<Map<String, dynamic>> favorites = [];
+  GoogleCalendarService? _calendarService;
 
   @override
   void initState() {
@@ -41,6 +45,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             loadedFavorites.add({
               'placeName': value['placeName'],
               'placeLocation': value['placeLocation'],
+              'placeId': value['placeId'],
             });
           });
 
@@ -58,6 +63,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     }
   }
 
+  void _goToPlaceInfoPage(BuildContext context, Map<String, dynamic> place) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => PlaceInfoScreen(
+          journeyId: widget.journeyId,
+          placeName: place['placeName'],
+          placeLocation: place['placeLocation'],
+          placeId: place['placeId'],
+          googleCalendarService: widget.googleCalendarService,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,10 +88,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               itemCount: favorites.length,
               itemBuilder: (context, index) {
                 final favorite = favorites[index];
-                return ListTile(
-                  title: Text(favorite['placeName'] ?? 'Unknown Place'),
-                  subtitle:
-                      Text(favorite['placeLocation'] ?? 'Unknown Location'),
+                return InkWell(
+                  onTap: () {
+                    _goToPlaceInfoPage(context, favorite);
+                  },
+                  child: ListTile(
+                    title: Text(favorite['placeName'] ?? 'Unknown Place'),
+                    subtitle:
+                        Text(favorite['placeLocation'] ?? 'Unknown Location'),
+                  ),
                 );
               },
             ),
