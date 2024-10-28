@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:intl/intl.dart';
@@ -9,11 +10,13 @@ class CreateEventDialog extends StatefulWidget {
     required this.name,
     required this.location,
     required this.googleCalendarService,
+    required this.journeyId,
   });
 
   final String name;
   final String location;
   final GoogleCalendarService googleCalendarService;
+  final String journeyId;
 
   @override
   State<CreateEventDialog> createState() => _CreateEventDialogState();
@@ -23,13 +26,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   @override
   void initState() {
     super.initState();
-    _calendarService = widget.googleCalendarService; // Initialize here
+    _calendarService = widget.googleCalendarService;
   }
 
   GoogleCalendarService? _calendarService;
 
   List<EventAttendee>? attendees = [];
-  final TextEditingController attendeeController = TextEditingController();
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
@@ -40,9 +42,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       print('Calendar service is not initialized');
       return;
     }
-    if (attendeeController.text.isNotEmpty) {
-      _addAttendees(attendeeController.text);
-    }
+    // if (attendeeController.text.isNotEmpty) {
+    //   _addAttendees(attendeeController.text);
+    // }
 
     DateTime? selectedDate = _getDateFromString(dateController.text);
     TimeOfDay? startTime = _getTimeOfDayFromString(startTimeController.text);
@@ -123,7 +125,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     dateController.dispose();
     startTimeController.dispose();
     endTimeController.dispose();
-    attendeeController.dispose();
     super.dispose();
   }
 
@@ -186,38 +187,67 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     }
   }
 
-  bool _isValidEmail(String email) {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    return emailRegex.hasMatch(email);
-  }
+  Future<void> receiveAttendees() async {
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('journeys/${widget.journeyId}').get();
 
-  void _addAttendees(String emails) {
-    if (emails.isNotEmpty) {
-      // Split the input by comma and trim whitespace
-      List<String> emailList =
-          emails.split(',').map((email) => email.trim()).toList();
+    if (snapshot.exists) {
+      // Assuming snapshot.value is a Map
+      final journeyData = snapshot.value as Map<dynamic, dynamic>;
 
-      setState(() {
-        for (String email in emailList) {
-          if (_isValidEmail(email)) {
-            attendees?.add(EventAttendee(email: email));
-            print('Added attendee: $email');
-          } else {
-            print('Invalid email: $email'); // Log invalid email
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Invalid email: $email'),
-                duration: Duration(seconds: 3),
-              ),
-            );
+      // Add organizatorName as an EventAttendee
+      final organizatorName = journeyData['organizatorName'] as String?;
+      if (organizatorName != null) {
+        attendees?.add(EventAttendee(email: organizatorName));
+      }
+
+      // Check if partners exist and are a list
+      if (journeyData['partners'] is List) {
+        for (var partner in journeyData['partners']) {
+          if (partner is String) {
+            attendees?.add(EventAttendee(email: partner));
           }
         }
-        print('Attendees now: ${attendees!.map((a) => a.email).toList()}');
-        attendeeController.clear();
-      });
+      }
+
+      print(attendees?.map((a) => a.email).toList());
+    } else {
+      print('No data available.');
     }
   }
+
+  // bool _isValidEmail(String email) {
+  //   final emailRegex =
+  //       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+  //   return emailRegex.hasMatch(email);
+  // }
+
+  // void _addAttendees(String emails) {
+  //   if (emails.isNotEmpty) {
+  //     // Split the input by comma and trim whitespace
+  //     List<String> emailList =
+  //         emails.split(',').map((email) => email.trim()).toList();
+
+  //     setState(() {
+  //       for (String email in emailList) {
+  //         if (_isValidEmail(email)) {
+  //           attendees?.add(EventAttendee(email: email));
+  //           print('Added attendee: $email');
+  //         } else {
+  //           print('Invalid email: $email'); // Log invalid email
+  //           ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(
+  //               content: Text('Invalid email: $email'),
+  //               duration: Duration(seconds: 3),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //       print('Attendees now: ${attendees!.map((a) => a.email).toList()}');
+  //       attendeeController.clear();
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -274,16 +304,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                   onTap: _selectEndTime,
                 ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: attendeeController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Add Attendee Email',
-                    filled: true,
-                    prefixIcon: Icon(Icons.people_alt),
-                  ),
-                ),
-                const SizedBox(height: 10),
                 Row(
                   children: [
                     TextButton(
@@ -291,12 +311,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                       child: const Text('Close'),
                     ),
                     OutlinedButton(
-                      onPressed: () {
-                        String emails = attendeeController.text;
-                        if (emails.isNotEmpty) {
-                          _addAttendees(
-                              emails); // Add the email to the attendees list
-                        }
+                      onPressed: () async {
+                        // String emails = attendeeController.text;
+                        // if (emails.isNotEmpty) {
+                        //   _addAttendees(
+                        //       emails); // Add the email to the attendees list
+                        // }
+                        await receiveAttendees();
                         createCalendarEvent();
                         Navigator.pop(context);
                       },
