@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/widgets/add_place_to_favorites.dart';
-import 'package:travel_app/widgets/create_event_dialog.dart';
+import 'package:travel_app/widgets/create_calendar_event_dialog.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 import 'package:travel_app/widgets/place_photo.dart';
 
@@ -78,6 +78,7 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                     name: widget.placeName,
                     location: widget.placeLocation,
                     googleCalendarService: widget.googleCalendarService,
+                    journeyId: widget.journeyId,
                   ),
                 ],
               ),
