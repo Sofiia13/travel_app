@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_app/screens/create_journey.dart';
 import 'package:travel_app/screens/signup.dart';
-import 'package:travel_app/screens/tabs.dart';
 import 'package:travel_app/widgets/authentication_form.dart';
 
 class LogInScreen extends StatefulWidget {

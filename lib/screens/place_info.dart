@@ -28,7 +28,6 @@ class PlaceInfoScreen extends StatefulWidget {
 }
 
 class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
-  GoogleCalendarService? _calendarService;
   LatLng? _coordinates;
   bool _isLoading = true;
 
@@ -46,9 +45,7 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
     if (calendarApi != null) {
       // Successfully authenticated
       print("Successfully authenticated and obtained Calendar API");
-      setState(() {
-        _calendarService = widget.googleCalendarService;
-      });
+      setState(() {});
     } else {
       print("Failed to authenticate");
     }

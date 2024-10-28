@@ -23,7 +23,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   final DatabaseReference _databaseRef =
       FirebaseDatabase.instance.ref("favorite_places");
   List<Map<String, dynamic>> favorites = [];
-  GoogleCalendarService? _calendarService;
 
   @override
   void initState() {

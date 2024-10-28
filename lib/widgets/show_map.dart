@@ -34,8 +34,7 @@ class _ShowMapState extends State<ShowMap> {
               //   vertical: 15,
               //   horizontal: 10,
               // ),
-              child: MapWidget(
-                  xCor: widget.xCor, yCor: widget.yCor), // Your map widget
+              child: MapWidget(xCor: widget.xCor, yCor: widget.yCor),
             ),
           ),
         );
