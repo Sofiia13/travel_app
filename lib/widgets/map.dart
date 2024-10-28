@@ -26,6 +26,20 @@ class MapWidget extends StatelessWidget {
                 "https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?&apiKey=731dfd7dfb0d4ebb99295e0cfe811177",
             userAgentPackageName: 'com.example.travel_app',
           ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                width: 60.0,
+                height: 60.0,
+                point: LatLng(yCor, xCor),
+                child: Icon(
+                  Icons.location_pin,
+                  size: 40.0,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
