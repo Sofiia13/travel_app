@@ -45,6 +45,7 @@ dependencies:
   googleapis: ^13.2.0
   syncfusion_flutter_calendar: ^27.1.53
   intl: ^0.18.0
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
