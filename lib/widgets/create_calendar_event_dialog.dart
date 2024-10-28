@@ -216,39 +216,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     }
   }
 
-  // bool _isValidEmail(String email) {
-  //   final emailRegex =
-  //       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-  //   return emailRegex.hasMatch(email);
-  // }
-
-  // void _addAttendees(String emails) {
-  //   if (emails.isNotEmpty) {
-  //     // Split the input by comma and trim whitespace
-  //     List<String> emailList =
-  //         emails.split(',').map((email) => email.trim()).toList();
-
-  //     setState(() {
-  //       for (String email in emailList) {
-  //         if (_isValidEmail(email)) {
-  //           attendees?.add(EventAttendee(email: email));
-  //           print('Added attendee: $email');
-  //         } else {
-  //           print('Invalid email: $email'); // Log invalid email
-  //           ScaffoldMessenger.of(context).showSnackBar(
-  //             SnackBar(
-  //               content: Text('Invalid email: $email'),
-  //               duration: Duration(seconds: 3),
-  //             ),
-  //           );
-  //         }
-  //       }
-  //       print('Attendees now: ${attendees!.map((a) => a.email).toList()}');
-  //       attendeeController.clear();
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
@@ -312,11 +279,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     ),
                     OutlinedButton(
                       onPressed: () async {
-                        // String emails = attendeeController.text;
-                        // if (emails.isNotEmpty) {
-                        //   _addAttendees(
-                        //       emails); // Add the email to the attendees list
-                        // }
                         await receiveAttendees();
                         createCalendarEvent();
                         Navigator.pop(context);
