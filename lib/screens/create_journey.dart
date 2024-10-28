@@ -70,7 +70,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
           }
         });
 
-        // Оновлюємо journeys один раз, коли програма запускається
         setState(() {
           journeys = initialJourneys;
         });
@@ -108,6 +107,18 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         journeys = [];
       });
     });
+  }
+
+  void deleteJourney(journeyId) async {
+    final ref = FirebaseDatabase.instance.ref();
+    final journeyRef = ref.child('journeys/$journeyId');
+
+    try {
+      await journeyRef.remove();
+      print('Journey removed successfully.');
+    } catch (e) {
+      print('Failed to remove journey: $e');
+    }
   }
 
   @override
@@ -151,9 +162,31 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
                       final journeyName = journey['journeyName'] as String? ??
                           'Unnamed Journey';
 
-                      return JourneyCards(
-                        name: journeyName,
-                        journeyId: journeyId,
+                      return Dismissible(
+                        key: Key(journeyId),
+                        background: Container(
+                          color: Colors.red,
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Icon(Icons.delete, color: Colors.white),
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          setState(() {
+                            journeys.removeAt(index);
+                            deleteJourney(journeyId);
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('$journeyName deleted')),
+                          );
+                        },
+                        child: JourneyCards(
+                          name: journeyName,
+                          journeyId: journeyId,
+                        ),
                       );
                     },
                   ),
