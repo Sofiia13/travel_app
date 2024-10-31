@@ -46,6 +46,8 @@ dependencies:
   syncfusion_flutter_calendar: ^27.1.53
   intl: ^0.18.0
   geocoding: ^3.0.0
+  google_fonts: ^6.2.1
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

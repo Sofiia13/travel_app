@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (user != null && !user.emailVerified) {
       try {
-        await FirebaseAuth.instance.setLanguageCode("fr");
+        await FirebaseAuth.instance.setLanguageCode("US");
         await user.sendEmailVerification();
         print('Verification email sent');
       } catch (e) {
