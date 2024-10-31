@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/screens/create_journey.dart';
 import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/tabs.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 58, 135, 183)),
+        textTheme: TextTheme(
+          displayLarge: const TextStyle(
+            fontSize: 72,
+            fontWeight: FontWeight.bold,
+          ),
+          // ···
+          titleLarge: GoogleFonts.barlow(
+            fontSize: 25,
+            // fontStyle: FontStyle.italic,
+          ),
+          bodyMedium: GoogleFonts.notoSans(),
+          displaySmall: GoogleFonts.pacifico(),
+        ),
       ),
       // home: const TabsScreen(),
       home: FirebaseAuth.instance.currentUser == null
