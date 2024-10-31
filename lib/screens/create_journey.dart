@@ -126,6 +126,9 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create your journey'),
+        actions: [
+          CreateJourneyForm(onSubmit: _addJourney),
+        ],
       ),
       drawer: Drawer(
         child: Column(
@@ -148,7 +151,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
       ),
       body: Column(
         children: [
-          CreateJourneyForm(onSubmit: _addJourney),
           Expanded(
             child: journeys.isEmpty
                 ? Center(

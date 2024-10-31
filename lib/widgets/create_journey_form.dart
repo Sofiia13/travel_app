@@ -74,83 +74,83 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.bottomRight,
-      padding: EdgeInsets.all(20),
-      // decoration: BoxDecoration(
-      //     border: Border.all(width: 4),
-      //   ),
-      child: IconButton(
-        onPressed: () async => showDialog(
-          context: context,
-          builder: (BuildContext context) => Dialog(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              margin: const EdgeInsets.all(10),
-              width: 200,
-              child: ListView(
-                // mainAxisSize: MainAxisSize.min,
-                // mainAxisAlignment: MainAxisAlignment.center,
+  void _showCreateJourneyDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(10),
+          width: 300,
+          child: ListView(
+            children: [
+              Text(
+                'Create Journey',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Add Journey Name',
+                  filled: true,
+                  prefixIcon: Icon(Icons.travel_explore),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: attendeeController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Add Attendee Email',
+                  filled: true,
+                  prefixIcon: Icon(Icons.people_alt),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
                 children: [
-                  Text(
-                    'Create Journey',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Close'),
                   ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Add Journey Name',
-                      filled: true,
-                      prefixIcon: Icon(Icons.travel_explore),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: attendeeController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Add Attendee Email',
-                      filled: true,
-                      prefixIcon: Icon(Icons.people_alt),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Close'),
-                      ),
-                      OutlinedButton(
-                        onPressed: () {
-                          String journeyName = nameController.text;
-                          String emails = attendeeController.text;
-                          _addAttendees(emails);
+                  OutlinedButton(
+                    onPressed: () {
+                      String journeyName = nameController.text;
+                      String emails = attendeeController.text;
+                      _addAttendees(emails);
 
-                          widget.onSubmit(journeyName, attendees ?? []);
+                      widget.onSubmit(journeyName, attendees ?? []);
 
-                          nameController.clear();
-                          attendeeController.clear();
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Create Journey'),
-                      ),
-                    ],
+                      nameController.clear();
+                      attendeeController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Create Journey'),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
-        ),
-        icon: Icon(
-          Icons.add,
-          color: Colors.black,
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return Container(
+    //   alignment: Alignment.bottomRight,
+    //   padding: EdgeInsets.all(20),
+    // decoration: BoxDecoration(
+    //     border: Border.all(width: 4),
+    //   ),
+    return IconButton(
+      onPressed: _showCreateJourneyDialog,
+      icon: const Icon(Icons.add),
+      color: Colors.white, // Change this to your desired color
+    );
+    // );
   }
 }
