@@ -21,7 +21,21 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 58, 135, 183)),
+          seedColor: const Color.fromARGB(255, 13, 84, 20),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: const Color.fromARGB(255, 13, 84, 20),
+          titleTextStyle: GoogleFonts.barlow(
+            fontSize: 25,
+            color: Colors.white,
+          ),
+          iconTheme: const IconThemeData(
+            color: Colors.white, // Set AppBar icons to white
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         textTheme: TextTheme(
           displayLarge: const TextStyle(
             fontSize: 72,
@@ -36,6 +50,7 @@ class MyApp extends StatelessWidget {
           displaySmall: GoogleFonts.pacifico(),
         ),
       ),
+
       // home: const TabsScreen(),
       home: FirebaseAuth.instance.currentUser == null
           ? const LogInScreen()
