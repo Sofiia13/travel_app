@@ -34,13 +34,27 @@ class _CitiesListState extends State<CitiesList> {
         Uri.parse('https://countriesnow.space/api/v0.1/countries/capital');
     final response = await http.get(url);
 
+    final flagResponse = await http.get(
+        Uri.parse('https://countriesnow.space/api/v0.1/countries/flag/images'));
+    final Map<String, dynamic> flagData = json.decode(flagResponse.body);
+    List<dynamic> flagCountries = flagData['data'];
+
+    Map<String, String> countryFlags = {};
+    for (final country in flagCountries) {
+      countryFlags[country['name']] = country['flag'];
+    }
+
     final Map<String, dynamic> listData = json.decode(response.body);
     _countries = listData['data'];
 
     for (final country in _countries) {
       for (final city in famousCities) {
         if (country['capital'] == city) {
-          _filteredCapitals.add(country);
+          _filteredCapitals.add({
+            'name': country['name'],
+            'capital': country['capital'],
+            'flag': countryFlags[country['name']] ?? '',
+          });
           break;
         }
       }
@@ -93,6 +107,9 @@ class _CitiesListState extends State<CitiesList> {
           itemBuilder: (context, index) {
             final country = _filteredCapitals[index];
             return CardsList(
+              flag: country['flag'] != null && country['flag'].isNotEmpty
+                  ? country['flag']
+                  : 'unknown_flag.png',
               country: country['name'],
               city: country['capital'],
               selectCity: () {

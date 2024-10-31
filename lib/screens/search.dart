@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:googleapis/androidpublisher/v3.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -30,6 +31,19 @@ class _SearchScreenState extends State<SearchScreen> {
     final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
     final response = await http.get(url);
 
+    // Fetch flags from the API
+    final flagResponse = await http.get(
+        Uri.parse('https://countriesnow.space/api/v0.1/countries/flag/images'));
+    final Map<String, dynamic> flagData = json.decode(flagResponse.body);
+    List<dynamic> flagCountries = flagData['data'];
+
+    // Create a map for easy access to flags by country name
+    Map<String, String> countryFlags = {};
+    for (final country in flagCountries) {
+      countryFlags[country['name']] = country['flag'];
+      print('Country: ${country['name']}, Flag URL: ${country['flag']}');
+    }
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> listData = json.decode(response.body);
       final List<dynamic> countries = listData['data'];
@@ -38,9 +52,11 @@ class _SearchScreenState extends State<SearchScreen> {
         String countryName = country['country'];
         List<String> cities = List<String>.from(country['cities']);
 
+        // Add flag to the country data
         _allCountriesWithCities.add({
           'country': countryName,
           'cities': cities,
+          'flag': countryFlags[countryName] ?? '',
         });
       }
     } else {
@@ -66,6 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _searchedPlaces.add({
             'country': place['country'],
             'city': city,
+            'flag': place['flag'],
           });
         }
       }
@@ -75,6 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _searchedPlaces.add({
             'country': place['country'],
             'city': city,
+            'flag': place['flag'],
           });
         }
       }
@@ -134,6 +152,9 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (context, index) {
                 final country = _searchedPlaces[index];
                 return CardsList(
+                    flag: country['flag'] != null && country['flag'].isNotEmpty
+                        ? country['flag']
+                        : 'unknown_flag.png',
                     country: country['country'],
                     city: country['city'],
                     selectCity: () {
