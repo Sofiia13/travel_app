@@ -29,7 +29,7 @@ class JourneyCards extends StatelessWidget {
       },
       child: Card(
         color: Color.fromARGB(255, 221, 239, 255),
-        elevation: 2,
+        elevation: 8,
         shadowColor: Colors.grey.withOpacity(0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -39,8 +39,8 @@ class JourneyCards extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 187, 230, 250), // Light blue
-                Color.fromARGB(255, 123, 192, 248), // Slightly darker shade
+                Color.fromARGB(255, 187, 230, 250),
+                Color.fromARGB(255, 123, 192, 248),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
