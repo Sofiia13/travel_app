@@ -20,17 +20,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: Color.fromARGB(255, 247, 247, 247),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 13, 84, 20),
+          seedColor: const Color.fromARGB(255, 0, 57, 115),
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: const Color.fromARGB(255, 13, 84, 20),
+          backgroundColor: const Color.fromARGB(255, 0, 57, 115),
           titleTextStyle: GoogleFonts.barlow(
             fontSize: 25,
             color: Colors.white,
           ),
           iconTheme: const IconThemeData(
-            color: Colors.white, // Set AppBar icons to white
+            color: Colors.white,
           ),
         ),
         iconTheme: const IconThemeData(
