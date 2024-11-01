@@ -17,12 +17,12 @@ class CardsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Flag URL: $flag');
     return InkWell(
       onTap: () {
         selectCity();
       },
       child: Card(
+        color: Color.fromARGB(255, 203, 220, 235),
         margin: const EdgeInsets.all(10),
         child: Padding(
           padding: const EdgeInsets.all(30),
@@ -31,45 +31,58 @@ class CardsList extends StatelessWidget {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.grey,
+                radius: 32,
+                backgroundColor: Colors.black,
                 child: ClipOval(
-                  child: flag.endsWith('.svg')
-                      ? SvgPicture.network(
-                          flag,
-                          placeholderBuilder: (context) => Image.asset(
-                            'lib/assets/images/unknown_flag.png',
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                          // You can also use a placeholder for error handling
-                        )
-                      : Image.network(
-                          flag,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: flag.endsWith('.svg')
+                        ? SvgPicture.network(
+                            flag,
+                            placeholderBuilder: (context) => Image.asset(
                               'lib/assets/images/unknown_flag.png',
-                              width: 50,
-                              height: 50,
                               fit: BoxFit.cover,
-                            );
-                          },
-                        ),
+                            ),
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            flag,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'lib/assets/images/unknown_flag.png',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                  ),
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(city),
+                  Text(
+                    city,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 0, 57, 115),
+                    ),
+                  ),
                   const SizedBox(height: 20),
-                  Text(country),
+                  Text(
+                    country,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ],
               ),
             ],
