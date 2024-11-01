@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:travel_app/widgets/map.dart';
 import 'package:travel_app/widgets/places_listView.dart';
 
 class CityInfo extends StatefulWidget {
@@ -83,21 +82,54 @@ class _CityInfoState extends State<CityInfo> {
                     //   ),
                     //   child: MapWidget(xCor: xCor!, yCor: yCor!),
                     // ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: DropdownButton<String>(
-                        value: selectedCategory,
-                        items: categories.map((category) {
-                          return DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedCategory = value!;
-                          });
-                        },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: 6,
+                          horizontal: 10,
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          value: selectedCategory,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 57, 115),
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(
+                                  color: const Color.fromARGB(255, 0, 57, 115)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 2,
+                              ),
+                            ),
+                            hintText: 'Select a category',
+                            hintStyle: TextStyle(color: Colors.grey[400]),
+                          ),
+                          isExpanded: true,
+                          items: categories.map((category) {
+                            return DropdownMenuItem(
+                              value: category,
+                              child: Text(category),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCategory = value!;
+                            });
+                          },
+                        ),
                       ),
                     ),
                     Expanded(
@@ -111,7 +143,8 @@ class _CityInfoState extends State<CityInfo> {
                   ],
                 )
               : const Center(
-                  child: Text('Coordinates not found. Please try again.')),
+                  child: Text('Coordinates not found. Please try again.'),
+                ),
     );
   }
 }
