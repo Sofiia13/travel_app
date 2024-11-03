@@ -83,6 +83,7 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
           margin: const EdgeInsets.all(10),
           width: 300,
           child: ListView(
+            shrinkWrap: true,
             children: [
               Text(
                 'Create Journey',
@@ -110,6 +111,7 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
               ),
               const SizedBox(height: 10),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
@@ -119,13 +121,30 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
                     onPressed: () {
                       String journeyName = nameController.text;
                       String emails = attendeeController.text;
-                      _addAttendees(emails);
 
-                      widget.onSubmit(journeyName, attendees ?? []);
+                      // Check emails before submitting
+                      List<String> emailList = emails
+                          .split(',')
+                          .map((email) => email.trim())
+                          .toList();
+                      bool hasInvalidEmail =
+                          emailList.any((email) => !_isValidEmail(email));
 
-                      nameController.clear();
-                      attendeeController.clear();
-                      Navigator.pop(context);
+                      if (hasInvalidEmail) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Please enter valid emails.'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      } else {
+                        // Proceed if all emails are valid
+                        _addAttendees(emails);
+                        widget.onSubmit(journeyName, attendees ?? []);
+                        nameController.clear();
+                        attendeeController.clear();
+                        Navigator.pop(context);
+                      }
                     },
                     child: const Text('Create Journey'),
                   ),
