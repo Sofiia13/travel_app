@@ -53,24 +53,23 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
 
   void _getCoordinatesFromAddress(String address) async {
     try {
-      // Use the geocoding package to get coordinates from the address
       List<Location> locations = await locationFromAddress(address);
       if (locations.isNotEmpty) {
         setState(() {
           _coordinates =
               LatLng(locations.first.latitude, locations.first.longitude);
-          _isLoading = false; // Update loading state
+          _isLoading = false;
         });
       } else {
         print("No coordinates found for the address: $address");
         setState(() {
-          _isLoading = false; // Update loading state
+          _isLoading = false;
         });
       }
     } catch (e) {
       print("Error occurred while fetching coordinates: $e");
       setState(() {
-        _isLoading = false; // Update loading state
+        _isLoading = false;
       });
     }
   }
@@ -83,12 +82,24 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
       ),
       body: Center(
         child: _isLoading
-            ? CircularProgressIndicator() // Show loading indicator while fetching coordinates
+            ? CircularProgressIndicator()
             : _coordinates != null
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ? ListView(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      PlacePhoto(placeId: widget.placeId),
+                      Container(
+                        height: 300,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: PlacePhoto(placeId: widget.placeId),
+                        ),
+                      ),
                       Text('Some place info'),
                       Text('Bla bla bla'),
                       Padding(
@@ -100,12 +111,14 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                               xCor: _coordinates!.longitude,
                               yCor: _coordinates!.latitude,
                             ),
+                            // SizedBox(width: 5),
                             AddPlaceToFavorites(
                               journeyId: widget.journeyId,
                               placeName: widget.placeName,
                               placeLocation: widget.placeLocation,
                               placeId: widget.placeId,
                             ),
+                            // SizedBox(width: 5),
                             CreateEventDialog(
                               name: widget.placeName,
                               location: widget.placeLocation,
@@ -119,7 +132,7 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                     ],
                   )
                 : Text(
-                    'Unable to retrieve coordinates for $widget.placeLocation'), // Message when coordinates are not found
+                    'Unable to retrieve coordinates for $widget.placeLocation'),
       ),
     );
   }
