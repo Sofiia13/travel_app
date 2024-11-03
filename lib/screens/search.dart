@@ -142,27 +142,38 @@ class _SearchScreenState extends State<SearchScreen> {
                       Radius.circular(100),
                     ),
                   ),
-                  hintText: 'Enter city you want to visit'),
+                  hintText: 'Enter city or country you want to visit'),
             ),
           ),
           const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _searchedPlaces.length,
-              itemBuilder: (context, index) {
-                final country = _searchedPlaces[index];
-                return CardsList(
-                    flag: country['flag'] != null && country['flag'].isNotEmpty
-                        ? country['flag']
-                        : 'unknown_flag.png',
-                    country: country['country'],
-                    city: country['city'],
-                    selectCity: () {
-                      _selectCity(context, country['city']);
-                    });
-              },
+          if (_searchedPlaces.isEmpty)
+            Expanded(
+              child: Center(
+                child: Text(
+                  '?',
+                  style: TextStyle(fontSize: 150, color: Colors.grey),
+                ),
+              ),
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: _searchedPlaces.length,
+                itemBuilder: (context, index) {
+                  final country = _searchedPlaces[index];
+                  return CardsList(
+                      flag:
+                          country['flag'] != null && country['flag'].isNotEmpty
+                              ? country['flag']
+                              : 'unknown_flag.png',
+                      country: country['country'],
+                      city: country['city'],
+                      selectCity: () {
+                        _selectCity(context, country['city']);
+                      });
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
