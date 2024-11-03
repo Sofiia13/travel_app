@@ -54,8 +54,6 @@ class _ShowMapState extends State<ShowMap> {
       ),
       child: Icon(
         Icons.map_outlined,
-        // color: isFavorite ? Colors.red : Colors.grey,
-        // color: Colors.grey,
       ),
     );
   }
