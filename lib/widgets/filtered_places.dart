@@ -5,26 +5,25 @@ import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 class FilteredPlaces extends StatelessWidget {
   FilteredPlaces({
     super.key,
-    required this.name,
-    required this.location,
-    required this.placeId,
-    required this.journeyId,
+    required this.placeData,
   }) : googleCalendarService = GoogleCalendarServiceFactory.create();
 
-  final String name;
-  final String location;
-  final String placeId;
+  final Map<String, dynamic> placeData;
   final GoogleCalendarService googleCalendarService;
-  final String journeyId;
 
   void _selectPlace(BuildContext context, String placeName) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => PlaceInfoScreen(
           placeName: placeName,
-          placeLocation: location,
-          placeId: placeId,
-          journeyId: journeyId,
+          placeLocation: placeData['location'],
+          fee: placeData['fee'],
+          website: placeData['website'],
+          phone: placeData['phone'],
+          openingHours: placeData['opening_hours'],
+          wikiPlaceId: placeData['wikiPlaceId'],
+          placeId: placeData['placeId'],
+          journeyId: placeData['journeyId'],
           googleCalendarService: googleCalendarService,
         ),
       ),
@@ -37,7 +36,7 @@ class FilteredPlaces extends StatelessWidget {
       onTap: () {
         _selectPlace(
           context,
-          name,
+          placeData['name'],
         );
       },
       child: Container(
@@ -54,7 +53,7 @@ class FilteredPlaces extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  placeData['name'],
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -63,7 +62,7 @@ class FilteredPlaces extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  location,
+                  placeData['location'],
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black87,
