@@ -101,7 +101,7 @@ class _AddPlaceToFavoritesState extends State<AddPlaceToFavorites> {
       ),
       child: Icon(
         isFavorite ? Icons.favorite : Icons.favorite_border,
-        color: isFavorite ? Colors.red : Colors.grey,
+        color: isFavorite ? Colors.red : Theme.of(context).colorScheme.primary,
       ),
     );
   }
