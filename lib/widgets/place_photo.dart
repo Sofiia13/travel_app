@@ -60,6 +60,7 @@ class _PlacePhotoState extends State<PlacePhoto> {
               imageUrl!,
               fit: BoxFit.cover,
               height: 300,
+              width: double.infinity,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
@@ -74,7 +75,6 @@ class _PlacePhotoState extends State<PlacePhoto> {
               },
               errorBuilder:
                   (BuildContext context, Object error, StackTrace? stackTrace) {
-                // Fallback to the asset image if the network image fails to load
                 return Image.asset(
                   'lib/assets/images/place_photo_not_found.jpg',
                   fit: BoxFit.cover,
@@ -86,6 +86,7 @@ class _PlacePhotoState extends State<PlacePhoto> {
               'lib/assets/images/place_photo_not_found.jpg',
               fit: BoxFit.cover,
               height: 300,
+              width: double.infinity,
             ),
     );
   }
