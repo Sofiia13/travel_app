@@ -44,6 +44,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             loadedFavorites.add({
               'placeName': value['placeName'],
               'placeLocation': value['placeLocation'],
+              'wikiPlaceId': value['wikiPlaceId'],
               'placeId': value['placeId'],
             });
           });
@@ -69,6 +70,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           journeyId: widget.journeyId,
           placeName: place['placeName'],
           placeLocation: place['placeLocation'],
+          fee: place['fee'],
+          website: place['website'],
+          phone: place['phone'],
+          openingHours: place['opening_hours'],
+          wikiPlaceId: place['wikiPlaceId'],
           placeId: place['placeId'],
           googleCalendarService: widget.googleCalendarService,
         ),

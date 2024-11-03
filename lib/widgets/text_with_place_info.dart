@@ -5,10 +5,12 @@ import 'package:http/http.dart' as http;
 class TextWithPlaceInfo extends StatefulWidget {
   const TextWithPlaceInfo({
     super.key,
+    required this.wikiPlaceId,
     required this.placeId,
   });
 
   final String placeId;
+  final String wikiPlaceId;
 
   @override
   State<TextWithPlaceInfo> createState() => _TextWithPlaceInfoState();
@@ -17,11 +19,15 @@ class TextWithPlaceInfo extends StatefulWidget {
 class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
   bool _isLoading = true;
   String description = '';
+  Map<String, dynamic> place_information = {};
+  List _place = [];
+  final String apiKey = '731dfd7dfb0d4ebb99295e0cfe811177';
 
   @override
   void initState() {
     super.initState();
-    _getPlaceInfoFromWiki(widget.placeId);
+    _getPlaceInfoFromWiki(widget.wikiPlaceId);
+    _getPlacesById(widget.placeId);
   }
 
   String capitalizeFirstLetter(String text) {
@@ -77,15 +83,47 @@ class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
     }
   }
 
+  void _getPlacesById(String id) async {
+    final url = Uri.parse(
+        'https://api.geoapify.com/v2/place-details?$id&apiKey=$apiKey');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      setState(() {
+        _place = listData['features'];
+        if (_place.isNotEmpty) {
+          place_information['website'] = _place[0]['properties']['website'];
+          place_information['address'] = _place[0]['properties']['formatted'];
+          place_information['address'] = _place[0]['properties']['formatted'];
+        }
+        _isLoading = false;
+      });
+    } else {
+      print('Failed to load places: ${response.statusCode}');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: description.isNotEmpty
-          ? Text(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (description.isNotEmpty)
+            Text(
               description,
-              style: TextStyle(fontSize: 16),
-            )
-          : Container(),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
