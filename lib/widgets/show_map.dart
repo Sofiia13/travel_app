@@ -22,6 +22,9 @@ class _ShowMapState extends State<ShowMap> {
       builder: (BuildContext context) {
         final screenSize = MediaQuery.of(context).size;
         return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35),
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 20,
@@ -30,11 +33,13 @@ class _ShowMapState extends State<ShowMap> {
             child: Container(
               width: screenSize.width * 0.8,
               height: screenSize.height * 0.8,
-              // padding: const EdgeInsets.symmetric(
-              //   vertical: 15,
-              //   horizontal: 10,
-              // ),
-              child: MapWidget(xCor: widget.xCor, yCor: widget.yCor),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: MapWidget(xCor: widget.xCor, yCor: widget.yCor),
+              ),
             ),
           ),
         );
