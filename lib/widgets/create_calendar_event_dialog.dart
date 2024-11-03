@@ -227,8 +227,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
             margin: const EdgeInsets.all(10),
             width: 200,
             child: ListView(
-              // mainAxisSize: MainAxisSize.min,
-              // mainAxisAlignment: MainAxisAlignment.center,
+              shrinkWrap: true,
               children: [
                 Text(
                   'Create Event',
@@ -272,6 +271,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 ),
                 const SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
