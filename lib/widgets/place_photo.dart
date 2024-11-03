@@ -55,14 +55,38 @@ class _PlacePhotoState extends State<PlacePhoto> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: imageUrl != null
+      child: imageUrl != null && imageUrl!.isNotEmpty
           ? Image.network(
               imageUrl!,
               fit: BoxFit.cover,
               height: 300,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            (loadingProgress.expectedTotalBytes ?? 1)
+                        : null,
+                  ),
+                );
+              },
+              errorBuilder:
+                  (BuildContext context, Object error, StackTrace? stackTrace) {
+                // Fallback to the asset image if the network image fails to load
+                return Image.asset(
+                  'lib/assets/images/place_photo_not_found.jpg',
+                  fit: BoxFit.cover,
+                  height: 300,
+                );
+              },
             )
-          // : CircularProgressIndicator(),
-          : Text(''),
+          : Image.asset(
+              'lib/assets/images/place_photo_not_found.jpg',
+              fit: BoxFit.cover,
+              height: 300,
+            ),
     );
   }
 }
