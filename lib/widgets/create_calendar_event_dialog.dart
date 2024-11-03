@@ -292,6 +292,12 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           ),
         ),
       ),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+      ),
       child: Text('Add to Google Calendar'),
     );
   }
