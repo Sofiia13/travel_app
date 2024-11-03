@@ -56,7 +56,11 @@ class _PlacePhotoState extends State<PlacePhoto> {
   Widget build(BuildContext context) {
     return Center(
       child: imageUrl != null
-          ? Image.network(imageUrl!)
+          ? Image.network(
+              imageUrl!,
+              fit: BoxFit.cover,
+              height: 300,
+            )
           // : CircularProgressIndicator(),
           : Text(''),
     );
