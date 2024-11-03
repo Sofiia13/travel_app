@@ -75,14 +75,6 @@ class _CityInfoState extends State<CityInfo> {
           : (xCor != null && yCor != null)
               ? Column(
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(
-                    //     vertical: 15,
-                    //     horizontal: 20,
-                    //   ),
-                    //   child: MapWidget(xCor: xCor!, yCor: yCor!),
-                    // ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Container(
