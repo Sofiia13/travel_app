@@ -75,11 +75,21 @@ class _PlacesListviewState extends State<PlacesListview> {
       itemCount: _places.length,
       itemBuilder: (context, index) {
         final place = _places[index]['properties'];
+        final placeData = {
+          'name': place['address_line1'] ?? 'Unknown',
+          'location': place['address_line2'] ?? 'Unknown',
+          'wikiPlaceId': place['datasource']['raw']['wikidata'] ?? '',
+          'placeId': place['place_id'] ?? '',
+          'fee': place['datasource']['raw']['fee'] ?? 'Not Available',
+          'phone': place['contact']?['phone'] ?? 'Not Available',
+          'website': place['website'] ?? 'Not Available',
+          'openingHours':
+              place['datasource']['raw']['opening_hours'] ?? 'Not Available',
+          'journeyId': widget.journeyId,
+        };
+
         return FilteredPlaces(
-          name: place['address_line1'] ?? 'Unknown',
-          location: place['address_line2'] ?? 'Unknown',
-          placeId: place['datasource']['raw']['wikidata'] ?? '',
-          journeyId: widget.journeyId,
+          placeData: placeData,
         );
       },
     );
