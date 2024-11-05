@@ -59,11 +59,11 @@ class _CitiesListState extends State<CitiesList> {
         }
       }
     }
-    _filteredCapitals.toList();
-
-    setState(() {
-      _filteredCapitals;
-    });
+    if (mounted) {
+      setState(() {
+        _filteredCapitals; // This will trigger a rebuild of the widget with the updated data
+      });
+    }
   }
 
   // void _getCapital() async {
