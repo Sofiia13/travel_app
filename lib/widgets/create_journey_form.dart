@@ -13,6 +13,7 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
   List<String>? attendees = [];
   final TextEditingController attendeeController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
+  bool hasInvalidEmail = false;
 
   @override
   void dispose() {
@@ -49,28 +50,28 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
   }
 
   void _addAttendees(String emails) {
+    attendees?.clear();
+    hasInvalidEmail = false;
+
     if (emails.isNotEmpty) {
       List<String> emailList =
           emails.split(',').map((email) => email.trim()).toList();
 
-      setState(() {
-        attendees = [];
-        for (String email in emailList) {
-          if (_isValidEmail(email)) {
-            attendees?.add(email);
-            print('Added attendee: $email');
-          } else {
-            print('Invalid email: $email');
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Invalid email: $email'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-          }
+      for (String email in emailList) {
+        if (_isValidEmail(email)) {
+          attendees?.add(email);
+          print('Added attendee: $email');
+        } else {
+          hasInvalidEmail = true;
+          print('Invalid email: $email');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Invalid email: $email'),
+              duration: Duration(seconds: 3),
+            ),
+          );
         }
-        attendeeController.clear();
-      });
+      }
     }
   }
 
@@ -122,29 +123,11 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
                       String journeyName = nameController.text;
                       String emails = attendeeController.text;
 
-                      bool hasInvalidEmail = false;
-                      if (emails.isNotEmpty) {
-                        List<String> emailList = emails
-                            .split(',')
-                            .map((email) => email.trim())
-                            .toList();
-                        hasInvalidEmail =
-                            emailList.any((email) => !_isValidEmail(email));
-
-                        if (hasInvalidEmail) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text(
-                                  'Some emails are invalid. They will be ignored.'),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
-                        }
-                      }
-
                       _addAttendees(emails);
 
-                      widget.onSubmit(journeyName, attendees ?? []);
+                      if (!hasInvalidEmail) {
+                        widget.onSubmit(journeyName, attendees ?? []);
+                      }
 
                       nameController.clear();
                       attendeeController.clear();
