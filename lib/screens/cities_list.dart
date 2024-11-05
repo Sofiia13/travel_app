@@ -99,6 +99,7 @@ class _CitiesListState extends State<CitiesList> {
   @override
   void dispose() {
     super.dispose();
+    // _filteredCapitals;
   }
 
   @override
