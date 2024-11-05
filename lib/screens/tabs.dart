@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/calendar.dart';
 import 'package:travel_app/screens/cities_list.dart';
+import 'package:travel_app/screens/comments.dart';
 import 'package:travel_app/screens/favorites.dart';
 import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/search.dart';
@@ -65,6 +66,12 @@ class _TabsScreenState extends State<TabsScreen> {
         );
         activePageTitle = 'Favorites';
         break;
+      case 3:
+        activePage = CommentsScreen(
+          journeyId: widget.journeyId,
+        );
+        activePageTitle = 'Comments';
+        break;
       default:
         activePage = CitiesList(
           journeyId: widget.journeyId,
@@ -91,6 +98,8 @@ class _TabsScreenState extends State<TabsScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.apps),
@@ -103,6 +112,10 @@ class _TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.comment),
+            label: 'Comments',
           ),
         ],
       ),
