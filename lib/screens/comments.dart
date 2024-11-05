@@ -29,7 +29,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     String currentUserEmail = FirebaseAuth.instance.currentUser!.email!;
     _user = types.User(id: currentUserId, firstName: currentUserEmail);
 
-    // Set the reference to the specific journey's messages
     _messagesRef =
         FirebaseDatabase.instance.ref().child('messages/${widget.journeyId}');
 
@@ -63,7 +62,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
         });
 
         setState(() {
-          // Sort messages in chronological order and reverse the order to display the newest first
           _messages = loadedMessages
             ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
         });
@@ -119,11 +117,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
         },
         'createdAt': message.createdAt,
       }).then((_) {
-        // Add to local state after successfully sending
         setState(() {
-          _messages.insert(0, message); // Insert new message at the top
+          _messages.insert(0, message);
         });
-        myController.clear(); // Clear input field after sending
+        myController.clear();
       }).catchError((error) {
         print("Failed to send message: $error");
       });
@@ -148,6 +145,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 theme: DefaultChatTheme(
                   inputBackgroundColor:
                       const Color.fromARGB(255, 158, 193, 253),
+                  inputTextColor: Colors.white,
                   inputBorderRadius: BorderRadius.circular(30),
                   messageBorderRadius: 15,
                   primaryColor: Theme.of(context).colorScheme.primary,
