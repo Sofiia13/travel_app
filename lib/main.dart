@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/create_journey.dart';
 import 'package:travel_app/screens/logIn.dart';
-import 'package:travel_app/screens/tabs.dart';
+import 'package:travel_app/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
@@ -12,8 +12,30 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _showSplash = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _startSplashScreenTimer();
+  }
+
+  void _startSplashScreenTimer() {
+    print("Starting splash screen timer...");
+    Future.delayed(const Duration(seconds: 6), () {
+      setState(() {
+        _showSplash = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +75,11 @@ class MyApp extends StatelessWidget {
       ),
 
       // home: const TabsScreen(),
-      home: FirebaseAuth.instance.currentUser == null
-          ? const LogInScreen()
-          : const CreateJourneyScreen(),
+      home: _showSplash
+          ? const SplashScreen()
+          : FirebaseAuth.instance.currentUser == null
+              ? const LogInScreen()
+              : const CreateJourneyScreen(),
       // home: const LogInScreen(),
     );
   }
