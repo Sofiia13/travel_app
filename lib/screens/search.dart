@@ -67,7 +67,6 @@ class _SearchScreenState extends State<SearchScreen> {
   void _getSearchedPlaces() {
     _searchedPlaces = [];
 
-    // Loop through all countries with cities
     for (final place in _allCountriesWithCities) {
       final countryMatch =
           place['country'].toLowerCase().contains(enteredText.toLowerCase());
