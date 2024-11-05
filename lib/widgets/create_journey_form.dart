@@ -54,10 +54,10 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
           emails.split(',').map((email) => email.trim()).toList();
 
       setState(() {
-        attendees = []; // Initialize the attendees list
+        attendees = [];
         for (String email in emailList) {
           if (_isValidEmail(email)) {
-            attendees?.add(email); // Safely add email
+            attendees?.add(email);
             print('Added attendee: $email');
           } else {
             print('Invalid email: $email');
@@ -122,29 +122,33 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
                       String journeyName = nameController.text;
                       String emails = attendeeController.text;
 
-                      // Check emails before submitting
-                      List<String> emailList = emails
-                          .split(',')
-                          .map((email) => email.trim())
-                          .toList();
-                      bool hasInvalidEmail =
-                          emailList.any((email) => !_isValidEmail(email));
+                      bool hasInvalidEmail = false;
+                      if (emails.isNotEmpty) {
+                        List<String> emailList = emails
+                            .split(',')
+                            .map((email) => email.trim())
+                            .toList();
+                        hasInvalidEmail =
+                            emailList.any((email) => !_isValidEmail(email));
 
-                      if (hasInvalidEmail) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Please enter valid emails.'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                      } else {
-                        // Proceed if all emails are valid
-                        _addAttendees(emails);
-                        widget.onSubmit(journeyName, attendees ?? []);
-                        nameController.clear();
-                        attendeeController.clear();
-                        Navigator.pop(context);
+                        if (hasInvalidEmail) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  'Some emails are invalid. They will be ignored.'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        }
                       }
+
+                      _addAttendees(emails);
+
+                      widget.onSubmit(journeyName, attendees ?? []);
+
+                      nameController.clear();
+                      attendeeController.clear();
+                      Navigator.pop(context);
                     },
                     child: const Text('Create Journey'),
                   ),
