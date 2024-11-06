@@ -39,14 +39,6 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  void signOut(GoogleCalendarService calendarService) async {
-    await calendarService.signOut();
-    print('Google Calendar signed out.');
-
-    await FirebaseAuth.instance.signOut();
-    _goToLoginPage(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget activePage;
@@ -81,17 +73,6 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.exit_to_app,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              signOut(calendarService);
-            },
-          ),
-        ],
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(

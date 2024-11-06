@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:travel_app/widgets/create_journey_form.dart';
 import 'package:travel_app/widgets/journey_cards.dart';
+import 'package:travel_app/widgets/google_calendar_service_factory.dart';
+import 'package:travel_app/screens/logIn.dart';
 
 class CreateJourneyScreen extends StatefulWidget {
   const CreateJourneyScreen({super.key});
@@ -14,6 +16,7 @@ class CreateJourneyScreen extends StatefulWidget {
 class _CreateJourneyState extends State<CreateJourneyScreen> {
   List<Map<String, dynamic>> journeys = [];
   String currentUser = FirebaseAuth.instance.currentUser!.email.toString();
+  GoogleCalendarService calendarService = GoogleCalendarServiceFactory.create();
 
   void _addJourney(String journeyName, List<String> attendees) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys").push();
@@ -81,6 +84,22 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
     });
   }
 
+  void signOut(GoogleCalendarService calendarService) async {
+    await calendarService.signOut();
+    print('Google Calendar signed out.');
+
+    await FirebaseAuth.instance.signOut();
+    _goToLoginPage(context);
+  }
+
+  void _goToLoginPage(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (ctx) => const LogInScreen(),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -145,6 +164,14 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
             ListTile(
               title: const Text('Dummy data'),
               onTap: () {},
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Sign Out'),
+              onTap: () {
+                signOut(calendarService);
+              },
             ),
           ],
         ),
