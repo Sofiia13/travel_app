@@ -1,9 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/waiting_verification.dart';
-import 'package:travel_app/widgets/authentication_form.dart';
+import 'package:travel_app/widgets/sign_up_form.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -14,7 +13,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
   String emailAddress = '';
   String password = '';
 
@@ -73,6 +73,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    setState(() {
+      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+    });
+  }
+
   void _goToLoginPage(BuildContext context) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -91,43 +103,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var _isSending = false;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 224, 239, 255),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            AuthenticationForm(
-              authenticateUser: createUserWithEmailAndPassword,
-              formKey: _formKey,
-              onEmailChanged: updateEmail,
-              onPasswordChanged: updatePassword,
-              buttonText: 'SignUp',
-              goTo: () {
-                // _goToWaitingPage(context);
-              },
-            ),
-            const SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
-                text: "Already have an account, please ",
-                style: const TextStyle(color: Colors.black),
-                children: [
-                  TextSpan(
-                    text: 'Login',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        _goToLoginPage(context);
-                      },
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: SignUpForm(
+          formKey: _formKey,
+          onEmailChanged: updateEmail,
+          onPasswordChanged: updatePassword,
+          authenticateUser: createUserWithEmailAndPassword,
+          buttonText: 'Sign Up',
+          navigateToLogin: () => _goToLoginPage(context),
         ),
       ),
     );
