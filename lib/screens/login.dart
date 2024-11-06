@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_app/screens/create_journey.dart';
@@ -14,21 +13,22 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   final _formKey = GlobalKey<FormState>();
-
   String emailAddress = '';
   String password = '';
+  bool isPasswordVisible = false;
 
   void signInWithEmailAndPassword() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: emailAddress, password: password);
-
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailAddress,
+          password: password,
+        );
+        // Navigate to the main page after successful login
         _goToHomePage(context);
       } on FirebaseAuthException catch (e) {
-        // Handle specific error codes
+        // Handle specific Firebase errors with user-friendly messages
         String errorMessage;
         switch (e.code) {
           case 'user-not-found':
@@ -41,9 +41,6 @@ class _LogInScreenState extends State<LogInScreen> {
           case 'invalid-email':
             errorMessage = 'The email address is not valid.';
             break;
-          case 'invalid-credential':
-            errorMessage = 'The email address or password is not valid.';
-            break;
           case 'user-disabled':
             errorMessage = 'This user account has been disabled.';
             break;
@@ -53,11 +50,9 @@ class _LogInScreenState extends State<LogInScreen> {
           default:
             errorMessage = 'An unexpected error occurred. Please try again.';
         }
-        print('FirebaseAuthException: ${e.code}, Message: ${e.message}');
-
-        showMessage(errorMessage); // Use the custom message
+        showMessage(errorMessage);
       } catch (e) {
-        // Handle other exceptions
+        // Handle non-Firebase-related exceptions
         showMessage('An unexpected error occurred: $e');
       }
     }
@@ -84,6 +79,12 @@ class _LogInScreenState extends State<LogInScreen> {
     });
   }
 
+  void _togglePasswordVisibility() {
+    setState(() {
+      isPasswordVisible = !isPasswordVisible;
+    });
+  }
+
   void _goToHomePage(BuildContext context) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -93,7 +94,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _goToSignUp(BuildContext context) {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const SignUpScreen(),
       ),
@@ -102,43 +103,26 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var _isSending = false;
-
     return Scaffold(
-      body: Padding(
+      backgroundColor: Color.fromARGB(255, 224, 239, 255),
+      body: SingleChildScrollView(
+        // Ensures the body is scrollable
         padding: const EdgeInsets.all(12),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 60), // Adjust top padding for better spacing
             AuthenticationForm(
               authenticateUser: signInWithEmailAndPassword,
               formKey: _formKey,
               onEmailChanged: updateEmail,
               onPasswordChanged: updatePassword,
               buttonText: 'Login',
-              goTo: () {
-                // _goToHomePage(context);
-              },
+              isPasswordVisible: isPasswordVisible,
+              onTogglePasswordVisibility: _togglePasswordVisibility,
+              navigateToSignup: () => _goToSignUp(context),
             ),
-            const SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
-                text: "If you don't have an account, please ",
-                style: const TextStyle(color: Colors.black),
-                children: [
-                  TextSpan(
-                    text: 'Sign up',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        _goToSignUp(context);
-                      },
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(height: 20), // Add space at the bottom
           ],
         ),
       ),
