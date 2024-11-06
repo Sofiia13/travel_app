@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:travel_app/screens/calendar.dart';
 import 'package:travel_app/screens/cities_list.dart';
 import 'package:travel_app/screens/comments.dart';
 import 'package:travel_app/screens/favorites.dart';
