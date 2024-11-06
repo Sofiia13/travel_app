@@ -49,9 +49,47 @@ class _WaitingVerificationScreenState extends State<WaitingVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 224, 239, 255),
       body: Center(
-        child: Text('Check your email box'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Animated icon for loading
+            Icon(
+              Icons.mail_outline_outlined,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 15),
+            // Text with more styling
+            Text(
+              'Check your email box',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const SizedBox(height: 15),
+            // Subtext
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                'We have sent a verification email to your inbox. Please confirm your email to proceed.',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.primary,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
