@@ -181,7 +181,12 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
           Expanded(
             child: journeys.isEmpty
                 ? Center(
-                    child: Text('No journeys found.'),
+                    child: Text(
+                      'No journeys found.',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
                   )
                 : ListView.builder(
                     itemCount: journeys.length,

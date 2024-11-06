@@ -39,8 +39,8 @@ class JourneyCards extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 187, 230, 250),
-                Color.fromARGB(255, 123, 192, 248),
+                Color.fromARGB(255, 180, 221, 240),
+                Color.fromARGB(255, 88, 160, 218),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
