@@ -48,10 +48,8 @@ class _MyAppState extends State<MyApp> {
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: const Color.fromARGB(255, 0, 57, 115),
-          titleTextStyle: GoogleFonts.barlow(
-            fontSize: 25,
-            color: Colors.white,
-          ),
+          titleTextStyle: GoogleFonts.roboto(
+              fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic),
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
@@ -69,7 +67,7 @@ class _MyAppState extends State<MyApp> {
             fontSize: 25,
             // fontStyle: FontStyle.italic,
           ),
-          bodyMedium: GoogleFonts.notoSans(),
+          bodyMedium: GoogleFonts.notoSans(fontStyle: FontStyle.italic),
           displaySmall: GoogleFonts.pacifico(),
         ),
       ),
