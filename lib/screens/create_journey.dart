@@ -21,19 +21,13 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
   void _addJourney(String journeyName, List<String> attendees) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("journeys").push();
 
-    String journeyId = ref.key!;
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
 
     await ref.set({
       'journeyName': journeyName,
       'organizatorName': currentUser,
       'partners': attendees,
-    });
-
-    setState(() {
-      journeys.insert(0, {
-        'journeyId': journeyId,
-        'journeyName': journeyName,
-      });
+      'createdAt': timestamp,
     });
   }
 
@@ -56,6 +50,7 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
                 'Unknown Organizer';
             final partners = journeyData['partners'] as List<dynamic>? ?? [];
             final attendees = partners.map((email) => email as String).toList();
+            final createdAt = journeyData['createdAt'] as int? ?? 0;
 
             if (organizerName == currentUser ||
                 attendees.contains(currentUser)) {
@@ -64,10 +59,14 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
                 'journeyName': journeyName,
                 'organizerName': organizerName,
                 'attendees': attendees,
+                'createdAt': createdAt,
               });
             }
           }
         });
+
+        initialJourneys
+            .sort((a, b) => b['createdAt'].compareTo(a['createdAt']));
 
         setState(() {
           journeys = initialJourneys;
@@ -153,11 +152,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
                 ),
               ),
             ),
-            ListTile(
-              title: const Text('Dummy data'),
-              onTap: () {},
-            ),
-            const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
