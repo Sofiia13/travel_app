@@ -136,6 +136,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _saveSearchedPlace(selectedPlace);
 
+    myController.clear();
+    FocusScope.of(context).unfocus();
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => CityInfo(
