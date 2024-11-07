@@ -45,6 +45,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               'placeLocation': value['placeLocation'],
               'wikiPlaceId': value['wikiPlaceId'],
               'placeId': value['placeId'],
+              'fee': value['fee'],
+              'website': value['website'],
+              'phone': value['phone'],
+              'opening_hours':
+                  value['opening_hours'] ?? 'No opening hours info',
             });
           });
 
@@ -97,9 +102,24 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     _goToPlaceInfoPage(context, favorite);
                   },
                   child: ListTile(
-                    title: Text(favorite['placeName'] ?? 'Unknown Place'),
-                    subtitle:
-                        Text(favorite['placeLocation'] ?? 'Unknown Location'),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0),
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: Icon(Icons.place, color: Colors.white),
+                    ),
+                    title: Text(
+                      favorite['placeName'] ?? 'Unknown Place',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    subtitle: Text(
+                      favorite['placeLocation'] ?? 'Unknown Location',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
                   ),
                 );
               },
