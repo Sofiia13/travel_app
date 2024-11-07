@@ -96,7 +96,6 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
             ? CircularProgressIndicator()
             : _coordinates != null
                 ? ListView(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         height: 300,
