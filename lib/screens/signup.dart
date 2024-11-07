@@ -22,11 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailAddress,
-          password: password,
-        );
         sendEmailVerification();
         _goToWaitingPage(context);
       } on FirebaseAuthException catch (e) {

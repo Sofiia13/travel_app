@@ -72,29 +72,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
       print("Error loading messages: $e");
     }
 
-    // Listen for new messages
-    _messagesRef.onChildAdded.listen((event) {
-      try {
-        final messageData = event.snapshot.value as Map<dynamic, dynamic>;
-        final message = types.TextMessage(
-          id: messageData['id'],
-          text: messageData['text'],
-          author: types.User(
-            id: messageData['author']['id'],
-            firstName: messageData['author']['firstName'],
-          ),
-          createdAt: messageData['createdAt'],
-        );
+    // _messagesRef.onChildAdded.listen((event) {
+    //   try {
+    //     final messageData = event.snapshot.value as Map<dynamic, dynamic>;
+    //     final message = types.TextMessage(
+    //       id: messageData['id'],
+    //       text: messageData['text'],
+    //       author: types.User(
+    //         id: messageData['author']['id'],
+    //         firstName: messageData['author']['firstName'],
+    //       ),
+    //       createdAt: messageData['createdAt'],
+    //     );
 
-        // setState(() {
-        //   // Insert the new message at the top and reverse the list
-        //   _messages.insert(
-        //       0, message); // Insert at the top for the reverse order
-        // });
-      } catch (e) {
-        print("Error handling new message: $e");
-      }
-    });
+    //   } catch (e) {
+    //     print("Error handling new message: $e");
+    //   }
+    // });
   }
 
   void _addMessage(String text) {
@@ -102,12 +96,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
       final message = types.TextMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: DateTime.now().millisecondsSinceEpoch.toString() +
-            _user.id, // Unique ID
+        id: DateTime.now().millisecondsSinceEpoch.toString() + _user.id,
         text: text,
       );
 
-      // Push the new message to Firebase
       _messagesRef.push().set({
         'id': message.id,
         'text': message.text,

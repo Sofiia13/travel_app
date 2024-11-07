@@ -3,10 +3,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatelessWidget {
-  MapWidget({super.key, required this.xCor, required this.yCor});
+  const MapWidget({super.key, required this.xCor, required this.yCor});
 
-  double xCor;
-  double yCor;
+  final double xCor;
+  final double yCor;
 
   @override
   Widget build(BuildContext context) {

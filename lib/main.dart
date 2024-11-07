@@ -74,14 +74,11 @@ class _MyAppState extends State<MyApp> {
           displaySmall: GoogleFonts.pacifico(),
         ),
       ),
-
-      // home: const TabsScreen(),
       home: _showSplash
           ? const SplashScreen()
           : FirebaseAuth.instance.currentUser == null
               ? const LogInScreen()
               : const CreateJourneyScreen(),
-      // home: const LogInScreen(),
     );
   }
 }

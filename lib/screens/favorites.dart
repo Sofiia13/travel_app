@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/place_info.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
-// import 'package:googleapis/servicemanagement/v1.dart';
 
 class FavoritesScreen extends StatefulWidget {
   FavoritesScreen({

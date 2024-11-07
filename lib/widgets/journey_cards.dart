@@ -13,7 +13,7 @@ class JourneyCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _goToHomePage(BuildContext context) {
+    void goToHomePage(BuildContext context) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => TabsScreen(
@@ -25,7 +25,7 @@ class JourneyCards extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        _goToHomePage(context);
+        goToHomePage(context);
       },
       child: Card(
         color: Color.fromARGB(255, 221, 239, 255),

@@ -17,7 +17,6 @@ class TextWithPlaceInfo extends StatefulWidget {
 }
 
 class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
-  bool _isLoading = true;
   String description = '';
   Map<String, dynamic> place_information = {};
   List _place = [];
@@ -58,24 +57,19 @@ class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
         if (descriptions.containsKey('en')) {
           setState(() {
             description = capitalizeFirstLetter(descriptions['en']);
-            _isLoading = false;
           });
         } else if (descriptions.containsKey('fr')) {
           setState(() {
             description = capitalizeFirstLetter(descriptions['fr']);
-            _isLoading = false;
           });
         } else {
           print('No English description found for the given place.');
           setState(() {
             description = 'Description not available.';
-            _isLoading = false;
           });
         }
       } else {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() {});
       }
       print('Failed to load place description: ${response.statusCode}');
     } else {
@@ -97,13 +91,10 @@ class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
           place_information['address'] = _place[0]['properties']['formatted'];
           place_information['address'] = _place[0]['properties']['formatted'];
         }
-        _isLoading = false;
       });
     } else {
       print('Failed to load places: ${response.statusCode}');
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() {});
     }
   }
 
