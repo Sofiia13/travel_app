@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
-  SignUpForm({
+  const SignUpForm({
     super.key,
     required this.formKey,
     required this.onEmailChanged,
