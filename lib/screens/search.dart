@@ -23,6 +23,27 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Map<String, dynamic>> _allCountriesWithCities = [];
   List<Map<String, dynamic>> _searchedPlaces = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSearchedPlaces();
+    myController.addListener(() {
+      if (mounted) {
+        setState(() {
+          enteredText = myController.text;
+          _getSearchedPlaces();
+        });
+      }
+    });
+    _getAllCities();
+  }
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
   void _getAllCities() async {
     final url = Uri.parse('https://countriesnow.space/api/v0.1/countries');
     final response = await http.get(url);
@@ -41,23 +62,19 @@ class _SearchScreenState extends State<SearchScreen> {
       final Map<String, dynamic> listData = json.decode(response.body);
       final List<dynamic> countries = listData['data'];
 
-      for (final country in countries) {
-        String countryName = country['country'];
-        List<String> cities = List<String>.from(country['cities']);
+      setState(() {
+        for (final country in countries) {
+          String countryName = country['country'];
+          List<String> cities = List<String>.from(country['cities']);
 
-        _allCountriesWithCities.add({
-          'country': countryName,
-          'cities': cities,
-          'flag': countryFlags[countryName] ?? '',
-        });
-      }
+          _allCountriesWithCities.add({
+            'country': countryName,
+            'cities': cities,
+            'flag': countryFlags[countryName] ?? '',
+          });
+        }
+      });
     }
-  }
-
-  void _saveSearchedPlaces(List<Map<String, dynamic>> places) async {
-    final prefs = await SharedPreferences.getInstance();
-    String encodedData = json.encode(places);
-    prefs.setString('searched_places_${widget.journeyId}', encodedData);
   }
 
   void _loadSearchedPlaces() async {
@@ -104,30 +121,21 @@ class _SearchScreenState extends State<SearchScreen> {
         }
       }
     }
-
-    _saveSearchedPlaces(_searchedPlaces);
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSearchedPlaces();
-    myController.addListener(() {
-      setState(() {
-        enteredText = myController.text;
-        _getSearchedPlaces();
-      });
-    });
-    _getAllCities();
-  }
+  void _selectCity(
+      BuildContext context, String cityName, String countryName, String flag) {
+    final selectedPlace = {
+      'country': countryName,
+      'city': cityName,
+      'flag': flag,
+    };
 
-  @override
-  void dispose() {
-    myController.dispose();
-    super.dispose();
-  }
+    _saveSearchedPlace(selectedPlace);
 
-  void _selectCity(BuildContext context, String cityName) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => CityInfo(
@@ -136,6 +144,27 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
+  }
+
+  void _saveSearchedPlace(Map<String, dynamic> place) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    String? savedData = prefs.getString('searched_places_${widget.journeyId}');
+    List<Map<String, dynamic>> savedPlaces = [];
+
+    if (savedData != null) {
+      List<dynamic> decodedData = json.decode(savedData);
+      savedPlaces = List<Map<String, dynamic>>.from(decodedData);
+    }
+
+    if (!savedPlaces.any((savedPlace) =>
+        savedPlace['country'] == place['country'] &&
+        savedPlace['city'] == place['city'])) {
+      savedPlaces.insert(0, place);
+    }
+
+    String encodedData = json.encode(savedPlaces);
+    prefs.setString('searched_places_${widget.journeyId}', encodedData);
   }
 
   @override
@@ -183,7 +212,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     country: country['country'],
                     city: country['city'],
                     selectCity: () {
-                      _selectCity(context, country['city']);
+                      _selectCity(
+                        context,
+                        country['city'],
+                        country['country'],
+                        country['flag'] ?? 'unknown_flag.png',
+                      );
                     },
                   );
                 },
