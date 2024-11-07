@@ -47,14 +47,12 @@ class _TabsScreenState extends State<TabsScreen> {
     DatabaseEvent event = await ref.once();
 
     if (event.snapshot.exists) {
-      // Example: if each journey is stored with an ID as key and has a 'name' field
       var journeys = event.snapshot.value as Map?;
       journeys?.forEach((journeyId, journeyData) {
         if (journeyId == widget.journeyId) {
           String fetchedJourneyName = journeyData['journeyName'];
-          print('Journey Name: $journeyName');
           setState(() {
-            journeyName = fetchedJourneyName; // Update the state
+            journeyName = fetchedJourneyName;
           });
         }
       });

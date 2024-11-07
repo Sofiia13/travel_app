@@ -105,14 +105,13 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     }
 
-    _saveSearchedPlaces(
-        _searchedPlaces); // Save to SharedPreferences with journeyId
+    _saveSearchedPlaces(_searchedPlaces);
   }
 
   @override
   void initState() {
     super.initState();
-    _loadSearchedPlaces(); // Load previously searched places for the specific journeyId
+    _loadSearchedPlaces();
     myController.addListener(() {
       setState(() {
         enteredText = myController.text;
