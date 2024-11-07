@@ -137,11 +137,11 @@ class _PlacesListviewState extends State<PlacesListview> {
             'location': place['address_line2'] ?? 'Unknown',
             'wikiPlaceId': place['datasource']['raw']['wikidata'] ?? '',
             'placeId': place['place_id'] ?? '',
-            'fee': place['datasource']['raw']['fee'] ?? 'Not Available',
-            'phone': place['contact']?['phone'] ?? 'Not Available',
-            'website': place['website'] ?? 'Not Available',
+            'fee': place['datasource']['raw']['fee'] ?? 'No fee info',
+            'phone': place['contact']?['phone'] ?? 'No phone info',
+            'website': place['website'] ?? 'No website info',
             'openingHours':
-                place['datasource']['raw']['opening_hours'] ?? 'Not Available',
+                place['datasource']['raw']['opening_hours'] ?? 'No info',
             'journeyId': widget.journeyId,
           };
 
