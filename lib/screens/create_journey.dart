@@ -82,7 +82,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
   void signOut(GoogleCalendarService calendarService) async {
     await calendarService.signOut();
-    print('Google Calendar signed out.');
 
     await FirebaseAuth.instance.signOut();
     _goToLoginPage(context);

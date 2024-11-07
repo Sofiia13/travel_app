@@ -14,7 +14,6 @@ class _WaitingVerificationScreenState extends State<WaitingVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    // Start checking for email verification when the screen is shown
     checkEmailVerification();
   }
 
@@ -24,13 +23,11 @@ class _WaitingVerificationScreenState extends State<WaitingVerificationScreen> {
 
     if (user != null) {
       if (user.emailVerified) {
-        print('Email is verified');
-        _goToLoginPage(context); // Redirect to login
+        _goToLoginPage(context);
       } else {
-        print('Email is not verified yet.');
         Future.delayed(const Duration(seconds: 3), () {
           if (mounted) {
-            checkEmailVerification(); // Retry verification check
+            checkEmailVerification();
           }
         });
       }
@@ -56,14 +53,12 @@ class _WaitingVerificationScreenState extends State<WaitingVerificationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Animated icon for loading
             Icon(
               Icons.mail_outline_outlined,
               size: 80,
               color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: 15),
-            // Text with more styling
             Text(
               'Check your email box',
               style: TextStyle(
@@ -74,7 +69,6 @@ class _WaitingVerificationScreenState extends State<WaitingVerificationScreen> {
               ),
             ),
             const SizedBox(height: 15),
-            // Subtext
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(

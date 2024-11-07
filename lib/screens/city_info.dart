@@ -60,7 +60,6 @@ class _CityInfoState extends State<CityInfo> {
       setState(() {
         _isLoading = false;
       });
-      print('Failed to load city coordinates: ${response.statusCode}');
     }
   }
 

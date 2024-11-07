@@ -63,7 +63,6 @@ class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
             description = capitalizeFirstLetter(descriptions['fr']);
           });
         } else {
-          print('No English description found for the given place.');
           setState(() {
             description = 'Description not available.';
           });

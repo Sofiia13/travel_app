@@ -40,7 +40,6 @@ class _PlacePhotoState extends State<PlacePhoto> {
         if (statements.containsKey('P18')) {
           String imageFileName = statements['P18'][0]['value']['content'];
           String encodedImageFileName = Uri.encodeComponent(imageFileName);
-          print(encodedImageFileName);
           String imageUrl =
               'https://commons.wikimedia.org/wiki/Special:FilePath/$encodedImageFileName';
 
