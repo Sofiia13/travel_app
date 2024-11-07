@@ -124,16 +124,16 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   Future<void> _selectDate() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().toUtc().add(Duration(days: 365)),
     );
 
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
-        dateController.text = DateFormat('dd-MM-yyyy').format(_picked);
+        dateController.text = DateFormat('dd-MM-yyyy').format(picked);
       });
     }
   }
