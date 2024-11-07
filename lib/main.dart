@@ -49,7 +49,10 @@ class _MyAppState extends State<MyApp> {
         appBarTheme: AppBarTheme(
           backgroundColor: const Color.fromARGB(255, 0, 57, 115),
           titleTextStyle: GoogleFonts.roboto(
-              fontSize: 25, color: Colors.white, fontStyle: FontStyle.italic),
+            fontSize: 25,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
