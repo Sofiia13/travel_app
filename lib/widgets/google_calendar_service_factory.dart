@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class GoogleCalendarService {
   final GoogleSignIn googleSignInCredentials;
-  CalendarApi? calendarApi; // Field for CalendarApi
+  CalendarApi? calendarApi;
 
   GoogleCalendarService({required this.googleSignInCredentials});
 
@@ -63,7 +63,6 @@ class GoogleCalendarService {
     }
 
     try {
-      // Create an event
       Event event = Event(
         summary: summary,
         description: description,
@@ -79,7 +78,6 @@ class GoogleCalendarService {
         attendees: attendees != null && attendees.isNotEmpty ? attendees : null,
       );
 
-      // Insert the event into the primary calendar
       await calendarApi!.events.insert(event, 'primary', sendUpdates: 'all');
       print('Event created: ${event.summary}');
     } catch (e) {
@@ -105,7 +103,6 @@ class GoogleCalendarServiceFactory {
         ),
       );
     } else if (Platform.isAndroid) {
-      // No client ID required for Android
       return GoogleCalendarService(
         googleSignInCredentials: GoogleSignIn(
           scopes: <String>[CalendarApi.calendarScope],

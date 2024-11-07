@@ -22,27 +22,6 @@ class _CreateJourneyFormState extends State<CreateJourneyForm> {
     super.dispose();
   }
 
-  void _addJourneyName(String journeyName) {
-    if (journeyName.isNotEmpty) {
-      setState(() {
-        nameController.text = journeyName;
-        print('Added attendee: $journeyName');
-
-        print('Invalid email: $journeyName');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Invalid name: $journeyName'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-
-          // print('Attendees now: ${attendees!.map((a) => a.email).toList()}');
-          // attendeeController.clear();
-          );
-    }
-  }
-
   bool _isValidEmail(String email) {
     final emailRegex =
         RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');

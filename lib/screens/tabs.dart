@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/screens/cities_list.dart';
 import 'package:travel_app/screens/comments.dart';
 import 'package:travel_app/screens/favorites.dart';
-import 'package:travel_app/screens/logIn.dart';
 import 'package:travel_app/screens/search.dart';
 import 'package:travel_app/widgets/google_calendar_service_factory.dart';
 

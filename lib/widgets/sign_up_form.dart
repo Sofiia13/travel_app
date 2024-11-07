@@ -61,7 +61,6 @@ class _SignUpFormState extends State<SignUpForm> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 35),
-            // Email TextFormField
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -85,7 +84,6 @@ class _SignUpFormState extends State<SignUpForm> {
               },
             ),
             const SizedBox(height: 10),
-            // Password TextFormField
             TextFormField(
               controller: _controllerPassword,
               obscureText: !_isPasswordVisible,
@@ -116,7 +114,6 @@ class _SignUpFormState extends State<SignUpForm> {
               },
             ),
             const SizedBox(height: 10),
-            // Confirm Password TextFormField
             TextFormField(
               controller: _controllerConfirmPassword,
               obscureText: !_isConfirmPasswordVisible,
@@ -146,7 +143,6 @@ class _SignUpFormState extends State<SignUpForm> {
               },
             ),
             const SizedBox(height: 40),
-            // Submit Button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 159, 199, 231),

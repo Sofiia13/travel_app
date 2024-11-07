@@ -72,7 +72,6 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
           _isLoading = false;
         });
       } else {
-        print("No coordinates found for the address: $address");
         setState(() {
           _isLoading = false;
         });
@@ -189,7 +188,6 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                               xCor: _coordinates!.longitude,
                               yCor: _coordinates!.latitude,
                             ),
-                            // SizedBox(width: 5),
                             AddPlaceToFavorites(
                               journeyId: widget.journeyId,
                               placeName: widget.placeName,
@@ -197,7 +195,6 @@ class _PlaceInfoScreenState extends State<PlaceInfoScreen> {
                               wikiPlaceId: widget.wikiPlaceId,
                               placeId: widget.placeId,
                             ),
-                            // SizedBox(width: 5),
                             CreateEventDialog(
                               name: widget.placeName,
                               location: widget.placeLocation,

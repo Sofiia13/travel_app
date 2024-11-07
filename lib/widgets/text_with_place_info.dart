@@ -18,7 +18,7 @@ class TextWithPlaceInfo extends StatefulWidget {
 
 class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
   String description = '';
-  Map<String, dynamic> place_information = {};
+  Map<String, dynamic> placeInformation = {};
   List _place = [];
   final String apiKey = '731dfd7dfb0d4ebb99295e0cfe811177';
 
@@ -87,9 +87,9 @@ class _TextWithPlaceInfoState extends State<TextWithPlaceInfo> {
       setState(() {
         _place = listData['features'];
         if (_place.isNotEmpty) {
-          place_information['website'] = _place[0]['properties']['website'];
-          place_information['address'] = _place[0]['properties']['formatted'];
-          place_information['address'] = _place[0]['properties']['formatted'];
+          placeInformation['website'] = _place[0]['properties']['website'];
+          placeInformation['address'] = _place[0]['properties']['formatted'];
+          placeInformation['address'] = _place[0]['properties']['formatted'];
         }
       });
     } else {

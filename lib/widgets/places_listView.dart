@@ -22,8 +22,8 @@ class PlacesListview extends StatefulWidget {
 }
 
 class _PlacesListviewState extends State<PlacesListview> {
-  List<dynamic> _allPlaces = [];
-  List<dynamic> _places = [];
+  final List<dynamic> _allPlaces = [];
+  final List<dynamic> _places = [];
   bool _isLoading = true;
   bool _isLoadingMore = false;
   bool _hasMorePlaces = true;
@@ -85,7 +85,6 @@ class _PlacesListviewState extends State<PlacesListview> {
         _isLoadingMore = false;
       });
     } else {
-      print('Failed to load places: ${response.statusCode}');
       setState(() {
         _isLoading = false;
         _isLoadingMore = false;

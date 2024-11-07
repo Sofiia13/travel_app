@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthenticationForm extends StatelessWidget {
-  AuthenticationForm({
+  const AuthenticationForm({
     super.key,
     required this.formKey,
     required this.onEmailChanged,

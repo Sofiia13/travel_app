@@ -61,23 +61,10 @@ class _CitiesListState extends State<CitiesList> {
     }
     if (mounted) {
       setState(() {
-        _filteredCapitals; // This will trigger a rebuild of the widget with the updated data
+        _filteredCapitals;
       });
     }
   }
-
-  // void _getCapital() async {
-  //   final url = 'https://api.dev.me/v1-list-countries';
-  //   final response = await http.get(
-  //     Uri.parse(url),
-  //     headers: {
-  //       'x-api-key':
-  //           '6703dd5762923bee1de4b1ff-73961361aefd', // Replace with your actual API key
-  //     },
-  //   );
-  //   final data = json.decode(response.body);
-  //   print(data); // Do something with the data
-  // }
 
   void _selectCity(BuildContext context, String cityName, String journeyId) {
     Navigator.of(context).push(
@@ -99,15 +86,11 @@ class _CitiesListState extends State<CitiesList> {
   @override
   void dispose() {
     super.dispose();
-    // _filteredCapitals;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Choose your city'),
-      // ),
       body: ListView.builder(
           itemCount: _filteredCapitals.length,
           itemBuilder: (context, index) {

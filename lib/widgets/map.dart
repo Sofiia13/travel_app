@@ -11,8 +11,6 @@ class MapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(10),
-      // width: double.infinity,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2.5,
       child: FlutterMap(

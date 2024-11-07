@@ -35,9 +35,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         'journeyName': journeyName,
       });
     });
-
-    print(
-        "Journey '$journeyName' with attendees $attendees saved to Firebase.");
   }
 
   void _fetchJourneys() async {
@@ -45,7 +42,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     ref.once().then((DatabaseEvent event) {
       final data = event.snapshot.value;
-      print("Raw data from Firebase: $data");
 
       if (data is Map<dynamic, dynamic>) {
         List<Map<String, dynamic>> initialJourneys = [];
@@ -104,7 +100,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
   void initState() {
     super.initState();
 
-    // Завантажуємо початковий список journeys один раз при запуску
     if (FirebaseAuth.instance.currentUser != null) {
       _fetchJourneys();
       _subscribeToJourneys();
@@ -121,7 +116,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
         _fetchJourneys();
       });
 
-      print("No journeys found for the user.");
       setState(() {
         journeys = [];
       });
@@ -134,7 +128,6 @@ class _CreateJourneyState extends State<CreateJourneyScreen> {
 
     try {
       await journeyRef.remove();
-      print('Journey removed successfully.');
     } catch (e) {
       print('Failed to remove journey: $e');
     }

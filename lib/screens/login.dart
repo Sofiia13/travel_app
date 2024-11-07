@@ -25,10 +25,8 @@ class _LogInScreenState extends State<LogInScreen> {
           email: emailAddress,
           password: password,
         );
-        // Navigate to the main page after successful login
         _goToHomePage(context);
       } on FirebaseAuthException catch (e) {
-        // Handle specific Firebase errors with user-friendly messages
         String errorMessage;
         switch (e.code) {
           case 'user-not-found':
@@ -52,7 +50,6 @@ class _LogInScreenState extends State<LogInScreen> {
         }
         showMessage(errorMessage);
       } catch (e) {
-        // Handle non-Firebase-related exceptions
         showMessage('An unexpected error occurred: $e');
       }
     }
@@ -106,12 +103,11 @@ class _LogInScreenState extends State<LogInScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 224, 239, 255),
       body: SingleChildScrollView(
-        // Ensures the body is scrollable
         padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 60), // Adjust top padding for better spacing
+            const SizedBox(height: 60),
             AuthenticationForm(
               authenticateUser: signInWithEmailAndPassword,
               formKey: _formKey,
@@ -122,7 +118,7 @@ class _LogInScreenState extends State<LogInScreen> {
               onTogglePasswordVisibility: _togglePasswordVisibility,
               navigateToSignup: () => _goToSignUp(context),
             ),
-            const SizedBox(height: 20), // Add space at the bottom
+            const SizedBox(height: 20),
           ],
         ),
       ),

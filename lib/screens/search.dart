@@ -20,7 +20,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final myController = TextEditingController();
   String enteredText = '';
-  List<Map<String, dynamic>> _allCountriesWithCities = [];
+  final List<Map<String, dynamic>> _allCountriesWithCities = [];
   List<Map<String, dynamic>> _searchedPlaces = [];
 
   @override

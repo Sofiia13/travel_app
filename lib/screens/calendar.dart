@@ -47,7 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: _signOutAndSignIn, // Sign out and allow re-signing
+            onPressed: _signOutAndSignIn,
           ),
         ],
       ),

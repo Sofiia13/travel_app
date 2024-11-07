@@ -71,24 +71,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     } catch (e) {
       print("Error loading messages: $e");
     }
-
-    // _messagesRef.onChildAdded.listen((event) {
-    //   try {
-    //     final messageData = event.snapshot.value as Map<dynamic, dynamic>;
-    //     final message = types.TextMessage(
-    //       id: messageData['id'],
-    //       text: messageData['text'],
-    //       author: types.User(
-    //         id: messageData['author']['id'],
-    //         firstName: messageData['author']['firstName'],
-    //       ),
-    //       createdAt: messageData['createdAt'],
-    //     );
-
-    //   } catch (e) {
-    //     print("Error handling new message: $e");
-    //   }
-    // });
   }
 
   void _addMessage(String text) {

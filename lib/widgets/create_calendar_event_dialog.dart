@@ -42,9 +42,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       print('Calendar service is not initialized');
       return;
     }
-    // if (attendeeController.text.isNotEmpty) {
-    //   _addAttendees(attendeeController.text);
-    // }
 
     DateTime? selectedDate = _getDateFromString(dateController.text);
     TimeOfDay? startTime = _getTimeOfDayFromString(startTimeController.text);
@@ -67,7 +64,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         endTime.minute,
       );
 
-      // Create the calendar event
       try {
         await _calendarService!.createEvent(
           widget.name,
@@ -77,7 +73,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           endDateTime,
           attendees!.isNotEmpty ? attendees : null,
         );
-        print("Event created successfully.");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Event created successfully!'),
@@ -154,7 +149,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
       setState(() {
         startTimeController.text = pickedTime.format(context);
       });
-      print("Selected start time: ${startTimeController.text}");
     }
   }
 
@@ -168,21 +162,17 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     TimeOfDay? startTime = _getTimeOfDayFromString(startTimeController.text);
 
     if (pickedTime != null && startTime != null) {
-      // Compare total minutes of picked end time and start time
       if (_timeToMinutes(pickedTime) > _timeToMinutes(startTime)) {
         setState(() {
           endTimeController.text = pickedTime.format(context);
         });
-        print("Selected end time: ${endTimeController.text}");
       } else {
-        // Show a message if the end time is not valid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('End time cannot be earlier than start time.'),
             duration: Duration(seconds: 3),
           ),
         );
-        print("End time cannot be earlier than start time.");
       }
     }
   }
@@ -192,16 +182,13 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     final snapshot = await ref.child('journeys/${widget.journeyId}').get();
 
     if (snapshot.exists) {
-      // Assuming snapshot.value is a Map
       final journeyData = snapshot.value as Map<dynamic, dynamic>;
 
-      // Add organizatorName as an EventAttendee
       final organizatorName = journeyData['organizatorName'] as String?;
       if (organizatorName != null) {
         attendees?.add(EventAttendee(email: organizatorName));
       }
 
-      // Check if partners exist and are a list
       if (journeyData['partners'] is List) {
         for (var partner in journeyData['partners']) {
           if (partner is String) {
@@ -209,8 +196,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           }
         }
       }
-
-      print(attendees?.map((a) => a.email).toList());
     } else {
       print('No data available.');
     }
