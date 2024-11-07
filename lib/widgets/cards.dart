@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 class CardsList extends StatelessWidget {
   const CardsList({
@@ -14,6 +15,19 @@ class CardsList extends StatelessWidget {
   final String country;
   final String city;
   final void Function() selectCity;
+
+  Future<String> fetchSvg() async {
+    try {
+      final response = await http.get(Uri.parse(flag));
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        throw Exception('Failed to load SVG');
+      }
+    } catch (e) {
+      return 'Error loading SVG: $e';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,25 +53,28 @@ class CardsList extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: flag.endsWith('.svg')
-                        ? SvgPicture.network(
-                            flag,
-                            placeholderBuilder: (context) => Image.asset(
-                              'lib/assets/images/unknown_flag.png',
-                              fit: BoxFit.cover,
-                            ),
+                    child: FutureBuilder<String>(
+                      future: fetchSvg(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Image.asset(
+                            'lib/assets/images/unknown_flag.png',
                             fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            flag,
+                          );
+                        } else if (snapshot.hasError) {
+                          return Image.asset(
+                            'lib/assets/images/unknown_flag.png',
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'lib/assets/images/unknown_flag.png',
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ),
+                          );
+                        } else {
+                          return SvgPicture.string(
+                            snapshot.data!, // Виводимо SVG
+                            fit: BoxFit.cover,
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
