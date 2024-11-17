@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_app/screens/create_journey.dart';
+import 'package:travel_app/screens/reset_password.dart';
 import 'package:travel_app/screens/signup.dart';
 import 'package:travel_app/widgets/authentication_form.dart';
 
@@ -98,6 +99,14 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
+  void _goToReset(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => const resetPasswordScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,6 +126,7 @@ class _LogInScreenState extends State<LogInScreen> {
               isPasswordVisible: isPasswordVisible,
               onTogglePasswordVisibility: _togglePasswordVisibility,
               navigateToSignup: () => _goToSignUp(context),
+              resetPassword: () => _goToReset(context),
             ),
             const SizedBox(height: 20),
           ],
