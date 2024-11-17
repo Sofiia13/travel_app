@@ -11,6 +11,7 @@ class AuthenticationForm extends StatelessWidget {
     required this.onTogglePasswordVisibility,
     required this.isPasswordVisible,
     required this.navigateToSignup,
+    required this.resetPassword,
   });
 
   final GlobalKey<FormState> formKey;
@@ -21,6 +22,7 @@ class AuthenticationForm extends StatelessWidget {
   final void Function() onTogglePasswordVisibility;
   final bool isPasswordVisible;
   final void Function() navigateToSignup;
+  final void Function() resetPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +86,9 @@ class AuthenticationForm extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   // Authentication Button
+                  TextButton(
+                      onPressed: resetPassword,
+                      child: Text('Forgot Password?')),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 159, 199, 231),
