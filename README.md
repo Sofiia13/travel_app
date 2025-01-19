@@ -1,6 +1,6 @@
 # VoyageVerse
 
-**VoyageVerse** is a mobile app for planning trips with friends. The app allows users to create itineraries, choose places to visit, share ideas and information, and plan group trips with other users.
+**🧭VoyageVerse** is a mobile app for planning trips with friends. The app allows users to create itineraries, choose places to visit, share ideas and information, and plan group trips with other users.
 
 - [How the App Works](#how-the-app-works)
 - [Features](#features)
@@ -9,9 +9,9 @@
 ## How the App Works
 1. **Registration and Login:** First, the user registers and logs in to their account.
 2. **Create a Trip:** After logging in, the user can create a new trip and add friends to the trip.
-3. **Select a City:** The group of friends then selects a city to travel to.
+3. **Select a City:** The group of friends selects a city to travel to.
 4. **Choose a Category and Place:** The group selects the category of places they want to visit and chooses specific locations.
-5. **Interactive Map:** Users can view places on a dynamic map to see where the locations are. They can add places to their favorites or schedule a visit to a location directly in Google Calendar.
+5. **Interactive Map:** Users can view places on a dynamic map to see where the locations are. They can add places to their favorites or schedule a visit to a location using Google Calendar.
 6. **Chat:** The app features a built-in chat, allowing users to coordinate and finalize plans with friends directly within the app.
 
 ## Features
@@ -27,7 +27,7 @@
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/VoyageVerse.git
+   git clone https://github.com/Sofiia13/travel_app.git
 2. Navigate to the project directory:
    ```bash
    cd travel_app
